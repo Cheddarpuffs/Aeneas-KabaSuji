@@ -4,6 +4,12 @@
   -fx-font-size:18px;
 }
 
+.locked-level-select-button{
+  -fx-text-fill:#aaa;
+  -fx-background-color:WHITE;
+  -fx-font-size:18px;
+}
+
 .h2-label{
   -fx-font-size:24px;
   -fx-text-fill:BLACK;
@@ -33,6 +39,10 @@
 
 .level-number{
 	-fx-font-size:20px;
+}
+
+.create_new_level_label{
+  -fx-font-weight: bold;
 }
 
 .achievement-title{

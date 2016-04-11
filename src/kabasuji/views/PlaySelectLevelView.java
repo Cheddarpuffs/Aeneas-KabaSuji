@@ -16,10 +16,11 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 import kabasuji.controllers.SelectLevelController;
-import kabasuji.models.Model;
 import kabasuji.models.Level;
+import kabasuji.models.Model;
 
 public class PlaySelectLevelView extends BorderPane implements Initializable {
 
@@ -27,6 +28,9 @@ public class PlaySelectLevelView extends BorderPane implements Initializable {
   private GridPane levelGrid;
 
   private Model gameModel;
+
+  @FXML
+  private GridPane customLevelGrid;
 
   public MainView parentView;
 
@@ -52,38 +56,59 @@ public class PlaySelectLevelView extends BorderPane implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    int numRows = gameModel.numLevels / numCols;
 
-    for (int r = 0; r < numRows; r++) {
-      for (int c = 0; c < numCols; c++) {
-        int levelIndex = numCols * r + c;
-        int levelNumber = levelIndex + 1;
-        Level level = gameModel.levels.get(levelIndex);
+    for (Level level : gameModel.levels){
+      int r = (level.levelNumber - 1) / numCols;
+      int c = (level.levelNumber - 1) % numCols;
+      JFXButton button = makeLevelButton(level.levelNumber, level.isLocked());
+      button.setOnMouseClicked(new SelectLevelController(this, level));
+      HBox stars = makeStars(level.starsEarned);
 
-        JFXButton button = new JFXButton();
-
-        button.setPrefSize(100, 100);
-        button.getStyleClass().add("level-select-button");
-        button.setButtonType(ButtonType.FLAT);
-        button.setText(String.valueOf(levelNumber));
-        button.applyCss();
-        button.setOnMouseClicked(new SelectLevelController(this, level));
-
-        HBox stars = new HBox();
-        stars.setMouseTransparent(true);
-        stars.setAlignment(Pos.BOTTOM_CENTER);
-        stars.setSpacing(2);
-        for (int i = 0; i < level.starsEarned; i++) {
-          FontAwesomeIconView star = new FontAwesomeIconView();
-          star.setGlyphName("STAR");
-          star.setSize("2em");
-          star.setGlyphStyle("-fx-fill:#FFC107");
-          stars.getChildren().add(star);
-        }
-
+      if (level.isPrebuilt()) {
         levelGrid.add(button, c, r);
         levelGrid.add(stars, c, r);
       }
+      else {
+        customLevelGrid.add(button, c, r);
+        customLevelGrid.add(stars, c, r);
+      }
     }
+  }
+
+  private JFXButton makeLevelButton(int levelNumber, boolean locked){
+      JFXButton button = new JFXButton();
+
+      button.setPrefSize(100, 100);
+      button.setButtonType(ButtonType.FLAT);
+
+      if (locked){
+        button.getStyleClass().add("locked-level-select-button");
+        button.setText("?");
+      }
+      else {
+        button.getStyleClass().add("level-select-button");
+        button.setText(String.valueOf(levelNumber));
+      }
+
+      button.applyCss();
+
+      return button;
+  }
+
+  private HBox makeStars(int starsEarned){
+    HBox stars = new HBox();
+    stars.setMouseTransparent(true);
+    stars.setAlignment(Pos.BOTTOM_CENTER);
+    stars.setSpacing(2);
+
+    for (int i = 0; i < starsEarned; i++) {
+      FontAwesomeIconView star = new FontAwesomeIconView();
+      star.setGlyphName("STAR");
+      star.setSize("2em");
+      star.setGlyphStyle("-fx-fill:#FFC107");
+      stars.getChildren().add(star);
+    }
+
+    return stars;
   }
 }
