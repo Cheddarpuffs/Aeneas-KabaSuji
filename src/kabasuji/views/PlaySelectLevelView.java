@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXButton.ButtonType;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,8 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-
 import kabasuji.controllers.SelectLevelController;
 import kabasuji.models.Level;
 import kabasuji.models.Model;
@@ -57,7 +54,7 @@ public class PlaySelectLevelView extends BorderPane implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
-    for (Level level : gameModel.levels){
+    for (Level level : gameModel.levels) {
       int r = (level.levelNumber - 1) / numCols;
       int c = (level.levelNumber - 1) % numCols;
       JFXButton button = makeLevelButton(level.levelNumber, level.isLocked());
@@ -67,35 +64,37 @@ public class PlaySelectLevelView extends BorderPane implements Initializable {
       if (level.isPrebuilt()) {
         levelGrid.add(button, c, r);
         levelGrid.add(stars, c, r);
-      }
-      else {
+      } else {
         customLevelGrid.add(button, c, r);
         customLevelGrid.add(stars, c, r);
       }
     }
   }
 
-  private JFXButton makeLevelButton(int levelNumber, boolean locked){
-      JFXButton button = new JFXButton();
+  private JFXButton makeLevelButton(int levelNumber, boolean locked) {
+    JFXButton button = new JFXButton();
 
-      button.setPrefSize(100, 100);
-      button.setButtonType(ButtonType.FLAT);
+    button.setPrefSize(100, 100);
+    button.setButtonType(ButtonType.FLAT);
 
-      if (locked){
-        button.getStyleClass().add("locked-level-select-button");
-        button.setText("?");
-      }
-      else {
-        button.getStyleClass().add("level-select-button");
-        button.setText(String.valueOf(levelNumber));
-      }
+    if (locked) {
+      button.getStyleClass().add("locked-level-select-button");
+      FontAwesomeIconView lockGraphic = new FontAwesomeIconView();
+      lockGraphic.setGlyphName("LOCK");
+      lockGraphic.setGlyphSize(24);
+      lockGraphic.setGlyphStyle("-fx-fill:#eee");
+      button.setGraphic(lockGraphic);
+    } else {
+      button.getStyleClass().add("level-select-button");
+      button.setText(String.valueOf(levelNumber));
+    }
 
-      button.applyCss();
+    button.applyCss();
 
-      return button;
+    return button;
   }
 
-  private HBox makeStars(int starsEarned){
+  private HBox makeStars(int starsEarned) {
     HBox stars = new HBox();
     stars.setMouseTransparent(true);
     stars.setAlignment(Pos.BOTTOM_CENTER);

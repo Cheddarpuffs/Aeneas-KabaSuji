@@ -4,10 +4,16 @@
   -fx-font-size:18px;
 }
 
-.locked-level-select-button{
-  -fx-text-fill:#aaa;
-  -fx-background-color:WHITE;
-  -fx-font-size:18px;
+.level-select-button .jfx-rippler {
+  -fx-rippler-fill: #5264AE;
+}
+
+.locked-level-select-button {
+  -fx-background-color:GRAY;
+}
+
+.locked-level-select-button .jfx-rippler {
+  -fx-rippler-fill: #eee;
 }
 
 .h2-label{
