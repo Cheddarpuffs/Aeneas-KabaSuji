@@ -14,13 +14,16 @@ import aeneas.models.Model;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
 public class BuildSelectLevelView extends BorderPane implements Initializable {
 
   @FXML
-  private JFXListView fileList;
+  private Label createNewLevelLabel;
+  @FXML
+  private JFXListView<Label> fileList;
 
   @FXML
   private JFXButton openFile;
@@ -48,6 +51,7 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
     fileList.setOnMouseClicked((e) -> {
       System.out.println("selected " + fileList.getSelectionModel().getSelectedItem());
     });
@@ -56,8 +60,12 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
 
     openFile.setOnMouseClicked((e) -> {
       FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Open Resource File");
+      fileChooser.setTitle("Open Existing Level");
       fileChooser.showOpenDialog(parentView.stage);
+    });
+
+    createNewLevelLabel.setOnMouseClicked((e) -> {
+      parentView.switchToBuildLevelView();
     });
 
     JFXDepthManager.setDepth(fileList, 1);

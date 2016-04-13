@@ -2,11 +2,15 @@ package aeneas.models;
 
 public class PuzzleLevel extends Level {
   public static final String helpText = "";
-  
+
   public PuzzleLevel(Bullpen bullpen) {
     super(bullpen);
   }
-  
+
+  public PuzzleLevel(Bullpen bullpen, boolean prebuilt) {
+    super(bullpen, prebuilt);
+  }
+
   PuzzleBoard board;
 
   @Override

@@ -21,8 +21,19 @@ public class Model {
       Bullpen b = new Bullpen(new ArrayList<>());
       Level l = new PuzzleLevel(b);
       l.levelNumber = i + 1;
+      l.lock();
       levels.add(l);
     }
+
+    //add custom level for example
+    Bullpen b = new Bullpen(new ArrayList<>());
+    Level l = new PuzzleLevel(b, false);
+    l.prebuilt = false;
+    l.levelNumber = 16;
+    levels.add(l);
+
+    //of course level 1 stars unlocked
+    levels.get(0).unlock();
   }
 
   /**

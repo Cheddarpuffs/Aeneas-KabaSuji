@@ -4,6 +4,18 @@
   -fx-font-size:18px;
 }
 
+.level-select-button .jfx-rippler {
+  -fx-rippler-fill: #5264AE;
+}
+
+.locked-level-select-button {
+  -fx-background-color:GRAY;
+}
+
+.locked-level-select-button .jfx-rippler {
+  -fx-rippler-fill: #eee;
+}
+
 .h2-label{
   -fx-font-size:24px;
   -fx-text-fill:BLACK;
@@ -33,6 +45,10 @@
 
 .level-number{
 	-fx-font-size:20px;
+}
+
+.create_new_level_label{
+  -fx-font-weight: bold;
 }
 
 .achievement-title{

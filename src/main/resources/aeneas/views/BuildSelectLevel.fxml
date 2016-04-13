@@ -17,8 +17,7 @@
   <left>
     <StackPane alignment="BOTTOM_LEFT">
       <JFXListView prefWidth="300" fx:id="fileList">
-        <Label> ~/main.java/awesome_level.ksb</Label>
-        <Label> ~/main.java/another_level.ksb</Label>
+        <Label fx:id="createNewLevelLabel" styleClass="create_new_level_label">Create New Level</Label>
       </JFXListView>
       <JFXButton fx:id="openFile" prefWidth="50"
           prefHeight="50" style="-fx-rippler-fill:#FFCDD2;-fx-background-color:#F44336;">
