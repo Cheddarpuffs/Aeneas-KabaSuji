@@ -9,14 +9,14 @@ import java.io.IOException;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-// Not sure what sort of event this ends up taking.
+/**
+ * Saves the current level.
+ * @author jbkuszmaul
+ */
 public class SaveLevelController implements EventHandler<MouseEvent> {
-
-  Level levelModel;
   MainView view;
 
-  public SaveLevelController(MainView view, Level levelModel){
-    this.levelModel = levelModel;
+  public SaveLevelController(MainView view){
     this.view = view;
   }
 
@@ -25,7 +25,9 @@ public class SaveLevelController implements EventHandler<MouseEvent> {
     File saveFile = view.showSaveDialog();
     if (saveFile == null) return;
     try {
-      levelModel.save(saveFile);
+      // We retrieve the current level live, because the current
+      // level will change over time.
+      view.getBuildLevelView().getLevel().save(saveFile);
     } catch (IOException i) {
       System.out.println("Error occurred in opening file.");
     }

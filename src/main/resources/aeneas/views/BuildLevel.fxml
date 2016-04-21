@@ -47,27 +47,26 @@
                 <ToggleGroup fx:id="levelType" />
               </fx:define>
               <children>
-                <RadioButton text="Puzzle" toggleGroup="$levelType" />
-                <RadioButton text="Lightening" toggleGroup="$levelType" />
-                <RadioButton text="Release" toggleGroup="$levelType" />
+                <RadioButton fx:id="puzzleRadio" text="Puzzle" toggleGroup="$levelType" />
+                <RadioButton fx:id="lightningRadio" text="Lightning" toggleGroup="$levelType" />
+                <RadioButton fx:id="releaseRadio" text="Release" toggleGroup="$levelType" />
               </children>
             </VBox>
-            
             <HBox.margin>
               <Insets right="20" left="20" />
             </HBox.margin>
           </VBox>
-          <VBox fx:id="movesSelect" spacing="10">
+          <VBox spacing="10">
             <HBox spacing="5" alignment="CENTER_LEFT">
               <Label fx:id="movesLabel" text="Moves" />
-              <Spinner prefWidth="70" min="0" max="20"
-                initialValue="10">
+              <Spinner fx:id="movesSelect" prefWidth="70"
+                  min="0" max="20" initialValue="10">
                 <editable>true</editable>
               </Spinner>
             </HBox>
             <JFXColorPicker prefWidth="110"></JFXColorPicker>
             <VBox spacing="4" alignment="CENTER_LEFT">
-              <JFXDatePicker defaultColor="#3f51b5"
+              <JFXDatePicker fx:id="timerSelect" defaultColor="#3f51b5"
                 showTime="true" prefWidth="120"></JFXDatePicker>
             </VBox>
           </VBox>
@@ -76,14 +75,14 @@
           </VBox.margin>
           <VBox fx:id="sizing" spacing="10" alignment="TOP_LEFT">
             <HBox spacing="5" alignment="CENTER_RIGHT">
-              <Label fx:id="movesLabel" text="Rows" />
+              <Label fx:id="rowsLabel" text="Rows" />
               <Spinner prefWidth="70" min="0" max="12"
                 initialValue="12">
                 <editable>true</editable>
               </Spinner>
             </HBox>
             <HBox spacing="5" alignment="CENTER_RIGHT">
-              <Label fx:id="movesLabel" text="Columns" />
+              <Label fx:id="columnsLabel" text="Columns" />
               <Spinner prefWidth="70" min="0" max="12"
                 initialValue="12">
                 <editable>true</editable>

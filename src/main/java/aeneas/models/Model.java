@@ -154,6 +154,9 @@ public class Model {
     }
   }
 
+  /**
+   * Add new move to the undo stack.
+   */
   public void addNewMove(IMove move){
 
   }

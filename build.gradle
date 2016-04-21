@@ -14,8 +14,11 @@ mainClassName = "aeneas.Main"
 
 dependencies {
   compile files('lib/fontawesomefx-8.10-SNAPSHOT.jar', 'lib/jfoenix.jar')
-    runtime files('lib/fontawesomefx-8.10-SNAPSHOT.jar', 'lib/jfoenix.jar')
-    testCompile "junit:junit:4.12"
+  runtime files('lib/fontawesomefx-8.10-SNAPSHOT.jar', 'lib/jfoenix.jar')
+  testCompile "junit:junit:4.12"
+
+  testCompile "org.testfx:testfx-core:4.0.+"
+  testCompile "org.testfx:testfx-junit:4.0.+"
 }
 
 task javadocs(type: Javadoc) {

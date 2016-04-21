@@ -19,6 +19,36 @@ public abstract class Level implements java.io.Serializable {
 
   private boolean locked;
 
+  public interface LevelWithMoves {
+    public int getAllowedMoves();
+    public void setAllowedMoves(int moves);
+  }
+
+  public enum LevelType {
+    PUZZLE ("Puzzle"),
+    LIGHTNING ("Lightning"),
+    RELEASE ("Release");
+
+    private final String name;
+    LevelType(String name) {
+      this.name = name;
+    }
+
+    public String getName() { return name; }
+
+    public static LevelType fromString(String name) {
+      switch (name) {
+        case "Puzzle":
+          return PUZZLE;
+        case "Lightning":
+          return LIGHTNING;
+        case "Release":
+          return RELEASE;
+      }
+      return PUZZLE;
+    }
+  }
+
   public Level(Bullpen bullpen, boolean prebuilt) {
     this.bullpen = bullpen;
     this.prebuilt = prebuilt;
@@ -27,24 +57,36 @@ public abstract class Level implements java.io.Serializable {
   public Level(Bullpen bullpen) {
     this(bullpen, true);
   }
-  
+
   @Override
   public int hashCode() {
     return levelNumber;
   }
-  
+
   @Override
   public boolean equals(Object o) {
     if(o == null) return false;
-    
+
     if(o instanceof Level) {
       Level other = (Level)o;
       if(other.levelNumber == levelNumber && other.prebuilt == prebuilt) {
         return true;
       }
     }
-    
+
     return false;
+  }
+
+  /**
+   * Copy constructor.
+   * Does not actually copy the Bullpen, just passes along
+   * the reference.
+   */
+  public Level(Level src) {
+    this.bullpen = src.bullpen;
+    this.levelNumber = src.levelNumber;
+    this.prebuilt = src.prebuilt;
+    this.locked = src.locked;
   }
 
   /**
@@ -82,7 +124,7 @@ public abstract class Level implements java.io.Serializable {
   public void lock() {
     this.locked = true;
   }
-  
+
   public void reset() {
   }
 
@@ -119,4 +161,9 @@ public abstract class Level implements java.io.Serializable {
 
     return level;
   }
+
+  /**
+   * Get the level type without doing lots of instanceof's.
+   */
+  public abstract LevelType getLevelType();
 }
