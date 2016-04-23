@@ -1,19 +1,21 @@
 package aeneas.controllers;
+import aeneas.models.Level;
+import aeneas.models.Level.LevelType;
 import aeneas.models.LightningLevel;
 
 /**
  * Move action to set the allotted time for a lightning level
- * For use in the builder
+ * For use in the builder.
  *
  * @author Logan
- *
+ * @author jbkuszmaul
  */
 public class SetTimeMove implements IMove {
 
-
   LightningLevel level;
 
-  int time;
+  int newTime;
+  int oldTime;
 
   /**
    * Constructor
@@ -22,25 +24,27 @@ public class SetTimeMove implements IMove {
    */
   public SetTimeMove(LightningLevel level, int time) {
     this.level = level;
-    this.time = time;
+    this.newTime = time;
   }
 
   @Override
   public boolean execute() {
-    // TODO Auto-generated method stub
-    return false;
+    if (!isValid()) return false;
+    oldTime = level.getAllowedTime();
+    level.setAllowedTime(newTime);
+    return true;
   }
 
   @Override
   public boolean undo() {
-    // TODO Auto-generated method stub
-    return false;
+    if (!isValid()) return false;
+    level.setAllowedTime(oldTime);
+    return true;
   }
 
   @Override
   public boolean isValid() {
-    // TODO Auto-generated method stub
-    return false;
+    return level != null;
   }
 
 }
