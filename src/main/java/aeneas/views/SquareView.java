@@ -53,8 +53,9 @@ public class SquareView extends StackPane {
   }
 
   public void refresh(Square square) {
-    setColor(square.getColor());
+    
     if (square.getNum() != null) {
+      setColor(square.getColor());
       setNumber(square.getNum());
     }
   }
