@@ -168,9 +168,11 @@ public class Model {
   }
 
   public void setLatestDragSource(PieceSource latestDragSource) {
-    this.latestDragSource = latestDragSource; 
+    this.latestDragSource = latestDragSource;
   }
   public PieceSource getLatestDragSource() {
     return latestDragSource;
   }
+
+  public LevelIndex getLevelIndex() { return index; }
 }

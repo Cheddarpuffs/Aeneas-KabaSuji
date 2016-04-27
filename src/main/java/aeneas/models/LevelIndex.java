@@ -18,8 +18,13 @@ import java.util.HashMap;
 public class LevelIndex {
   HashMap<Integer, Level> levels;
 
+  public final String defaultLevelPath;
+
   LevelIndex() {
     levels = new HashMap<>();
+    // TODO: Consider changing this path.
+    String homeDir = System.getenv("HOME");
+    defaultLevelPath = homeDir + "/.aeneas-kabasuji";
     reindex();
   }
 
@@ -33,13 +38,11 @@ public class LevelIndex {
       levels.put(i, l);
     }
 
-    // honestly we need to change this path.
-    String homeDir = System.getenv("HOME");
-    String defaultLevelPath = homeDir + "/.aeneas-kabasuji";
     Path defaultDirectory = (new File(defaultLevelPath)).toPath();
 
     if (!Files.exists(defaultDirectory)) {
-      System.err.println("Error loading levels. Directory '" + defaultDirectory + "' does not exist.");
+      new File(defaultLevelPath).mkdir();
+      System.out.println("Directory '" + defaultDirectory + "' does not exist; it will be created.");
       return;
     }
 

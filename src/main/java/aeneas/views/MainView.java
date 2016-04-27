@@ -205,6 +205,8 @@ public class MainView extends StackPane implements Initializable {
 
   public File showSaveDialog() {
     FileChooser fileChooser = new FileChooser();
+    File initialDirectory = new File(model.getLevelIndex().defaultLevelPath);
+    fileChooser.setInitialDirectory(initialDirectory);
     fileChooser.setTitle("Save Level");
     return fileChooser.showSaveDialog(stage);
   }
