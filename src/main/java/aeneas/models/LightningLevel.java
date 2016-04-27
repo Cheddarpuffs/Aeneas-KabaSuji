@@ -18,11 +18,24 @@ public class LightningLevel extends Level implements java.io.Serializable {
    * @param bullpen The Bullpen to use for this level
    * @param allowedTime The allowable time for this level
    * @param board The board to use for this level
+   * @param prebuilt is the level custom or prebuilt
    */
-  public LightningLevel(Bullpen bullpen, int allowedTime, LightningBoard board) {
-    super(bullpen);
+  public LightningLevel(Bullpen bullpen, int allowedTime, LightningBoard board, boolean prebuilt) {
+    super(bullpen, prebuilt);
     this.allowedTime = allowedTime;
     this.board = board;
+  }
+
+  /**
+   * Constructor
+   * @param bullpen The Bullpen to use for this level
+   * @param allowedTime The allowable time for this level
+   * @param board The board to use for this level
+   * 
+   * assumes prebuilt
+   */
+  public LightningLevel(Bullpen bullpen, int allowedTime, LightningBoard board) {
+    this(bullpen, allowedTime, board, true);
   }  
 
 
@@ -30,12 +43,13 @@ public class LightningLevel extends Level implements java.io.Serializable {
    * Constructor. Will create a new, empty board for this level
    * @param bullpen The Bullpen to use for this level
    * @param allowedTime The allowable time for this level
+   * 
+   * assumes prebuilt
    */
   public LightningLevel(Bullpen bullpen, int allowedTime) {
-    super(bullpen);
-    this.allowedTime = allowedTime;
-    this.board = new LightningBoard();
+    this(bullpen, allowedTime, new LightningBoard(), true);
   }  
+
 
   @Override
   public int getStarsEarned() {

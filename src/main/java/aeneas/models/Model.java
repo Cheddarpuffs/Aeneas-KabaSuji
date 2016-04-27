@@ -48,26 +48,6 @@ public class Model {
   }
 
   /**
-   * Not sure why we have this *and* setActiveLevel
-   * @param level the level to be selected
-   */
-  public void selectLevel(Level level) {
-  }
-
-  /**
-   * Sets the current active level
-   * @param level the new level
-   */
-  public void setActiveLevel(Level level) {
-  }
-
-  /**
-   * Switch to the given screen
-   */
-  public void changeScreen(/*take argument for screen to go to*/) {
-  }
-
-  /**
    * Gets the metadata associated with a level.
    *
    * @param level The level to get metadata for.

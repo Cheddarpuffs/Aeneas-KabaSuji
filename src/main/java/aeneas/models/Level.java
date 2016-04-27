@@ -52,10 +52,6 @@ public abstract class Level implements java.io.Serializable {
     this.prebuilt = prebuilt;
   }
 
-  public Level(Bullpen bullpen) {
-    this(bullpen, true);
-  }
-
   /**
    * Copy constructor.
    * @param src the level you are copying from

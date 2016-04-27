@@ -2,7 +2,6 @@ package aeneas.models;
 
 import aeneas.views.LevelView;
 import aeneas.views.ReleaseView;
-
 import javafx.scene.paint.Color;
 
 /**
@@ -23,9 +22,18 @@ implements java.io.Serializable, Level.LevelWithMoves {
    * @param bullpen The bullpen to use for this level
    * @param board The Board to use for this level
    */
-  public ReleaseLevel(Bullpen bullpen, ReleaseBoard board){
-    super(bullpen);
+  public ReleaseLevel(Bullpen bullpen, ReleaseBoard board, boolean prebuilt){
+    super(bullpen, prebuilt);
     this.board = board;
+  }
+
+  /**
+   * Constructor
+   * @param bullpen The bullpen to use for this level
+   * @param board The Board to use for this level
+   */
+  public ReleaseLevel(Bullpen bullpen, ReleaseBoard board){
+    this(bullpen, board, true);
   }
 
   /**
@@ -33,8 +41,7 @@ implements java.io.Serializable, Level.LevelWithMoves {
    * @param bullpen The bullpen to use for this level
    */
   public ReleaseLevel(Bullpen bullpen) {
-    super(bullpen);
-    this.board = new ReleaseBoard();
+    this(bullpen, new ReleaseBoard(), true);
   }
 
   private boolean numberSetIsCovered(Color color) {

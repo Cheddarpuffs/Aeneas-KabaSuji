@@ -21,9 +21,18 @@ implements java.io.Serializable, Level.LevelWithMoves {
    * @param bullpen The bullpen to use for this level
    * @param board The board to use for this level
    */
-  public PuzzleLevel(Bullpen bullpen, PuzzleBoard board){
-    super(bullpen);
+  public PuzzleLevel(Bullpen bullpen, PuzzleBoard board, boolean prebuilt){
+    super(bullpen, prebuilt);
     this.board = board;
+  }
+
+  /**
+   * Constructor
+   * @param bullpen The bullpen to use for this level
+   * @param board The board to use for this level
+   */
+  public PuzzleLevel(Bullpen bullpen, PuzzleBoard board){
+    this(bullpen, board, true);
   }
 
   /**
@@ -31,8 +40,7 @@ implements java.io.Serializable, Level.LevelWithMoves {
    * @param bullpen The bullpen to use for this level
    */
   public PuzzleLevel(Bullpen bullpen) {
-    super(bullpen);
-    board = new PuzzleBoard();
+    this(bullpen, new PuzzleBoard(), true);
   }
 
   public PuzzleLevel(Bullpen bullpen, boolean prebuilt) {

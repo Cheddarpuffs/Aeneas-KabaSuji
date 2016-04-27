@@ -30,6 +30,16 @@ jar {
   }
 }
 
+task generateLevels(type:JavaExec) {
+   main = "aeneas.GenerateLevels"
+   classpath = sourceSets.main.runtimeClasspath
+}
+
+task copyGeneratedLevels(type:Copy, dependsOn: generateLevels) {
+  from 'build/levels/default'
+  into 'src/main/resources/aeneas/models/levels'
+}
+
 test {
     afterTest { desc, result ->
         println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"

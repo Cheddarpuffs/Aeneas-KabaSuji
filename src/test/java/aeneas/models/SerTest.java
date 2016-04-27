@@ -98,14 +98,14 @@ public class SerTest {
       assertEquals(i, p.getSquares()[i].getRow());
     }
   }
-  
+
   @Test
   public void testMetadata() {
     Model m = new Model();
     m.getMetadata(m.getLevel(2)).setLocked(false);
     assertFalse(m.getMetadata(m.getLevel(2)).isLocked());
     File file = new File("build/test_metadata.dat");
-    
+
     try {
       m.saveLevelMetadata(file);
     } catch (IOException e) {
@@ -120,7 +120,7 @@ public class SerTest {
       e.printStackTrace();
       fail("Failed to read file");
     }
-    
+
     assertFalse(m.getMetadata(m.getLevel(2)).isLocked());
   }
 }
