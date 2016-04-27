@@ -36,11 +36,11 @@
               </FontAwesomeIconView>
 
               <HBox>
-                <FontAwesomeIconView glyphName="STAR"
+                <FontAwesomeIconView fx:id="star1" glyphName="STAR_ALT"
                   size="2em" />
-                <FontAwesomeIconView glyphName="STAR"
+                <FontAwesomeIconView fx:id="star2" glyphName="STAR_ALT"
                   size="2em" />
-                <FontAwesomeIconView glyphName="STAR"
+                <FontAwesomeIconView fx:id="star3" glyphName="STAR_ALT"
                   size="2em" />
                 <HBox.margin>
                   <Insets left="30" />

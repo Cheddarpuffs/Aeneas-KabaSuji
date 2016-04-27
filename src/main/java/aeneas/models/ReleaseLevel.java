@@ -1,5 +1,6 @@
 package aeneas.models;
 
+import aeneas.models.Bullpen.BullpenLogic;
 import aeneas.views.LevelWidgetView;
 import aeneas.views.ReleaseWidgetView;
 
@@ -72,6 +73,7 @@ implements java.io.Serializable, Level.LevelWithMoves {
 
   public ReleaseLevel(Level src) {
     super(src);
+    this.bullpen.logic = BullpenLogic.releaseLogic();
   }
 
   @Override
@@ -94,5 +96,9 @@ implements java.io.Serializable, Level.LevelWithMoves {
   @Override
   public LevelWidgetView makeCorrespondingView() {
     return new ReleaseWidgetView(this);
+  }
+  
+  public String getIconName() {
+    return "SORT_NUMERIC_ASC";
   }
 }

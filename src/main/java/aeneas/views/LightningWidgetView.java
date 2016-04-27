@@ -1,5 +1,6 @@
 package aeneas.views;
 
+import aeneas.models.Level;
 import aeneas.models.LightningLevel;
 
 import javafx.scene.control.Label;
@@ -11,6 +12,8 @@ public class LightningWidgetView extends LevelWidgetView {
 
   private static final RadioButton button = new RadioButton("Lightning");
 
+  Spinner<Integer> timeSelect;
+  
   public LightningWidgetView(LightningLevel levelModel){
     super(levelModel);
 
@@ -18,7 +21,7 @@ public class LightningWidgetView extends LevelWidgetView {
     box.setSpacing(4);
 
     Label timeLabel = new Label("Time in Seconds");
-    Spinner<Integer> timeSelect = new Spinner<Integer>(0, 600, 30);
+    timeSelect = new Spinner<Integer>(0, 600, 30);
     timeSelect.setPrefWidth(120);
     int seconds = levelModel.getAllowedTime();
     timeSelect.getValueFactory().setValue(seconds);
@@ -33,6 +36,15 @@ public class LightningWidgetView extends LevelWidgetView {
     panel.getChildren().add(box);
 
     button.setUserData(this);
+  }
+  
+  public Level getLevelModel(Level level) {
+    LightningLevel l = new LightningLevel(level);
+    timeSelect.getValueFactory().setValue(l.getAllowedTime());
+    timeSelect.valueProperty().addListener((observer, old_seconds, new_seconds) -> {
+      l.setAllowedTime(new_seconds);
+    });
+    return l;
   }
 
   @Override

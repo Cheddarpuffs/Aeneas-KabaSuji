@@ -2,6 +2,7 @@ package aeneas.views;
 
 import com.jfoenix.controls.JFXColorPicker;
 
+import aeneas.models.Level;
 import aeneas.models.ReleaseLevel;
 
 import javafx.geometry.Pos;
@@ -14,11 +15,12 @@ import javafx.scene.layout.VBox;
 public class ReleaseWidgetView extends LevelWidgetView {
 
   private static final RadioButton button = new RadioButton("Release");
+  Spinner<Integer> movesSelect;
 
   public ReleaseWidgetView(ReleaseLevel levelModel){
     super(levelModel);
 
-    Spinner<Integer> movesSelect = new Spinner<Integer>(1, 20, 10);
+    movesSelect = new Spinner<Integer>(1, 20, 10);
     Label movesLabel = new Label("Moves");
     movesSelect.setPrefWidth(70);
     movesSelect.setEditable(true);
@@ -52,6 +54,16 @@ public class ReleaseWidgetView extends LevelWidgetView {
   @Override
   public RadioButton getButton() {
     return ReleaseWidgetView.button;
+  }
+  
+  @Override
+  public Level getLevelModel(Level level) {
+    ReleaseLevel l = new ReleaseLevel(level);
+    movesSelect.getValueFactory().setValue(l.getAllowedMoves());
+    movesSelect.valueProperty().addListener((observer, old_value, new_value) -> {
+      l.setAllowedMoves(new_value);
+    });
+    return l;
   }
 }
 

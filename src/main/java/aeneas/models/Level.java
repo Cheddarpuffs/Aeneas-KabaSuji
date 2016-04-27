@@ -18,6 +18,7 @@ public abstract class Level implements java.io.Serializable {
   Bullpen bullpen;
 
   transient int levelNumber;
+  transient boolean active = false;
   boolean prebuilt;
 
   public int getLevelNumber() {
@@ -136,4 +137,13 @@ public abstract class Level implements java.io.Serializable {
   }
 
   public abstract LevelWidgetView makeCorrespondingView();
+
+  public abstract String getIconName();
+
+  public void start() { active = true; }
+  public void stop() { active = false; }
+  
+  public boolean isActive() {
+    return active;
+  }
 }

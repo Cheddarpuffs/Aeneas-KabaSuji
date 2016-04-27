@@ -22,6 +22,11 @@ public class ReleaseBoard extends Board implements java.io.Serializable {
     this.numbers = numbers;
 
   }
+  
+  public ReleaseBoard(Board board) {
+    super(board);
+    this.numbers = new ArrayList<>();
+  }
 
 
   /**

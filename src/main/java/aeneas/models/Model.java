@@ -91,6 +91,11 @@ public class Model {
       if(getMetadata(activeLevel).getStarsEarned() < stars) {
         Level.Metadata m = levelMetadata.getOrDefault(activeLevel.getLevelNumber(), new Level.Metadata());
         m.setStarsEarned(stars);
+        if(stars > 0) {
+          Level.Metadata nextMetadata = levelMetadata.getOrDefault(activeLevel.getLevelNumber()+1, new Level.Metadata());
+          nextMetadata.setLocked(false);
+          levelMetadata.put(activeLevel.getLevelNumber()+1, nextMetadata);
+        }
         levelMetadata.put(activeLevel.getLevelNumber(), m);
       }
     }
@@ -172,5 +177,13 @@ public class Model {
   }
   public PieceSource getLatestDragSource() {
     return latestDragSource;
+  }
+
+  public void setActiveLevel(Level levelModel) {
+    activeLevel = levelModel;
+  }
+  
+  public Level getActiveLevel() {
+    return activeLevel;
   }
 }

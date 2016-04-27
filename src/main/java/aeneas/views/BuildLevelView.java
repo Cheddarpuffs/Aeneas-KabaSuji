@@ -99,11 +99,11 @@ public class BuildLevelView extends StackPane implements Initializable {
   private ArrayList<LevelWidgetView> levelViews;
   private Model model;
 
-  BuildLevelView(MainView mainView, ArrayList<LevelWidgetView> levelViews, LevelWidgetView levelView, Model model) {
-    this.levelView = levelView;
+  BuildLevelView(MainView mainView, ArrayList<LevelWidgetView> levelViews, Level level, Model model) {
+    this.levelView = level.makeCorrespondingView();
     this.levelViews = levelViews;
     this.model = model;
-    this.levelModel = levelView.getLevelModel();
+    this.levelModel = level;
     this.mainView = mainView;
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BuildLevel.fxml"));
@@ -118,7 +118,7 @@ public class BuildLevelView extends StackPane implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     this.boardView = new BoardView(this, model, levelModel.getBoard());
-    this.bullpenView = new BullpenView(model, bullpenBox, (Pane) this);
+    this.bullpenView = new BullpenView(model, levelModel.getBullpen(), bullpenBox, (Pane) this);
 
     VBox.setMargin(boardView, new Insets(10, 10, 10, 10));
     centerBox.setAlignment(Pos.TOP_RIGHT);
@@ -152,7 +152,7 @@ public class BuildLevelView extends StackPane implements Initializable {
         .addListener((ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) -> {
           if (new_toggle != null) {
             LevelWidgetView view = (LevelWidgetView) ((RadioButton) new_toggle).getUserData();
-            this.levelModel = view.getLevelModel();
+            this.levelModel = view.getLevelModel(this.levelModel);
             this.settingsBox.getChildren().set(1, view.getPanel());
           }
         });
@@ -185,7 +185,7 @@ public class BuildLevelView extends StackPane implements Initializable {
           IMove move = new AddPieceMove(levelModel.getBullpen(), pieceModel.clone());
           if (move.execute()){
             model.addNewMove(move);
-            bullpenView.refresh(levelModel.getBullpen());
+            bullpenView.refresh();
           }
         });
       }

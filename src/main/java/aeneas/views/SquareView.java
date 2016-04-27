@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 /**
  * View class to display a single square
  * @author Logan
- *
+ * @author Joseph Martin
  */
 public class SquareView extends StackPane {
 
@@ -42,10 +42,13 @@ public class SquareView extends StackPane {
   }
   
   public void setNumber(ReleaseNumber num){
-    Label l = new Label(Integer.toString(num.getValue()));
-    l.setTextFill(num.getColor());
-    l.setFont(new Font(20));
-    this.getChildren().add(l);
+    //this.getChildren().clear();
+    if(num != null) {
+      Label l = new Label(Integer.toString(num.getValue()));
+      l.setTextFill(num.getColor());
+      l.setFont(new Font(20));
+      this.getChildren().add(l);
+    }
   }
 
   public void setColor(Color color){
@@ -53,9 +56,12 @@ public class SquareView extends StackPane {
   }
 
   public void refresh(Square square) {
-    setColor(square.getColor());
-    if (square.getNum() != null) {
+    if(square != null) {
+      setColor(square.getColor());
       setNumber(square.getNum());
+    } else {
+      setColor(Color.BLACK);
+      setNumber(null);
     }
   }
 }
