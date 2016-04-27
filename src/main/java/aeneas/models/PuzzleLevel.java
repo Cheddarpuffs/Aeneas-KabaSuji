@@ -1,5 +1,6 @@
 package aeneas.models;
 
+import aeneas.models.Bullpen.BullpenLogic;
 import aeneas.views.LevelWidgetView;
 import aeneas.views.PuzzleWidgetView;
 
@@ -50,12 +51,13 @@ implements java.io.Serializable, Level.LevelWithMoves {
 
   public PuzzleLevel(Level src) {
     super(src);
+    this.bullpen.logic = BullpenLogic.puzzleLogic();
   }
 
 
   @Override
   public int getStarsEarned() {
-    return Math.max(0, 3 - bullpen.pieces.size());
+    return Math.max(0, 3 - board.numSquaresRemainig()/6);
   }
 
   @Override
@@ -78,5 +80,9 @@ implements java.io.Serializable, Level.LevelWithMoves {
   @Override
   public LevelWidgetView makeCorrespondingView() {
     return new PuzzleWidgetView(this);
+  }
+  
+  public String getIconName() {
+    return "PUZZLE_PIECE";
   }
 }

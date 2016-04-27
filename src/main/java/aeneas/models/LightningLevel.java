@@ -1,5 +1,9 @@
 package aeneas.models;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import aeneas.models.Bullpen.BullpenLogic;
 import aeneas.views.LevelWidgetView;
 import aeneas.views.LightningWidgetView;
 
@@ -12,6 +16,8 @@ public class LightningLevel extends Level implements java.io.Serializable {
 
   LightningBoard board;
   int allowedTime;
+  private transient int elapsedTime = 0;
+  private transient Timer timer;
 
   /**
    * Constructor
@@ -63,7 +69,10 @@ public class LightningLevel extends Level implements java.io.Serializable {
     if (src instanceof LightningLevel) {
       this.board = ((LightningLevel)src).board;
       this.allowedTime = ((LightningLevel)src).allowedTime;
+    } else {
+      this.board = new LightningBoard(src.getBoard());
     }
+    this.bullpen.logic = BullpenLogic.lightningLogic();
   }
 
   @Override
@@ -94,5 +103,32 @@ public class LightningLevel extends Level implements java.io.Serializable {
   @Override
   public LevelWidgetView makeCorrespondingView() {
     return new LightningWidgetView(this);
+  }
+  
+  public String getIconName() {
+    return "BOLT";
+  }
+  
+  @Override
+  public void start() {
+    if(timer == null) timer = new Timer();
+    timer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        elapsedTime++;
+        System.out.println("tick "+elapsedTime+"/"+allowedTime);
+        if(elapsedTime >= allowedTime) {
+          System.out.println("Times up");
+          timer.cancel();
+        }
+      }
+    }, 1000, 1000);
+  }
+  
+  @Override
+  public void stop() {
+    if (timer != null) {
+      timer.cancel();
+    }
   }
 }

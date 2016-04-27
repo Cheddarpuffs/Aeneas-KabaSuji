@@ -103,7 +103,7 @@ public class MainView extends StackPane implements Initializable {
     // create the different types of levels
     levelViews.add(new PuzzleWidgetView(new PuzzleLevel(new Bullpen(BullpenLogic.puzzleLogic()))));
     levelViews.add(new LightningWidgetView(new LightningLevel(new Bullpen(BullpenLogic.lightningLogic()), 0)));
-    levelViews.add(new ReleaseWidgetView(new ReleaseLevel(new Bullpen(BullpenLogic.releaseLogic()), new ReleaseBoard(null))));
+    levelViews.add(new ReleaseWidgetView(new ReleaseLevel(new Bullpen(BullpenLogic.releaseLogic()), new ReleaseBoard())));
   }
 
   public void switchToWelcomeView() {
@@ -124,8 +124,8 @@ public class MainView extends StackPane implements Initializable {
     content.getChildren().add(buildSelectLevelView);
   }
 
-  public void switchToBuildLevelView(LevelWidgetView levelView) {
-    BuildLevelView buildLevelView = new BuildLevelView(this, levelViews, levelView, model);
+  public void switchToBuildLevelView(Level level) {
+    BuildLevelView buildLevelView = new BuildLevelView(this, levelViews, level, model);
     paneStack.push(buildLevelView);
     content.getChildren().clear();
     content.getChildren().add(buildLevelView);
@@ -140,6 +140,7 @@ public class MainView extends StackPane implements Initializable {
   }
 
   public void switchToPlaySelectLevelView() {
+    playSelectLevelView.refresh();
     paneStack.push(playSelectLevelView);
     content.getChildren().clear();
     content.getChildren().add(playSelectLevelView);
@@ -219,7 +220,12 @@ public class MainView extends StackPane implements Initializable {
     // the current node should always be in the stack,
     // so only remove and go back if there's multiple things on the stack
     if (paneStack.size() > 1) {
-      paneStack.pop();
+
+      paneStack.pop();      
+      // This is really ugly. Probably to be replaced with an interface for the views or something
+     if(paneStack.peek() instanceof PlaySelectLevelView) {
+        ((PlaySelectLevelView)paneStack.peek()).refresh();
+      }
       content.getChildren().clear();
       content.getChildren().add(paneStack.peek());
     }

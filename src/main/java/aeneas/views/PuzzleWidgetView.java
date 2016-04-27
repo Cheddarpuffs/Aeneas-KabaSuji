@@ -1,5 +1,6 @@
 package aeneas.views;
 
+import aeneas.models.Level;
 import aeneas.models.PuzzleLevel;
 
 import javafx.geometry.Pos;
@@ -43,4 +44,13 @@ public class PuzzleWidgetView extends LevelWidgetView {
     return PuzzleWidgetView.button;
   }
 
+  @Override
+  public Level getLevelModel(Level level) {
+    PuzzleLevel l = new PuzzleLevel(level);
+    movesSelect.getValueFactory().setValue(l.getAllowedMoves());
+    movesSelect.valueProperty().addListener((observer, old_value, new_value) -> {
+      l.setAllowedMoves(new_value);
+    });
+    return l;
+  }
 }

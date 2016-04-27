@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  *
@@ -29,8 +30,8 @@ public class LevelIndex {
     ArrayList<Level> defaultLevels = LevelGenerator.generateDefaultLevels();
     for (int i = 0; i < defaultLevels.size(); i++) {
       Level l = defaultLevels.get(i);
-      l.levelNumber = i + 1;
-      levels.put(i, l);
+      l.levelNumber = i+1;
+      levels.put(i+1, l);
     }
 
     // honestly we need to change this path.
@@ -44,7 +45,8 @@ public class LevelIndex {
     }
 
     try {
-      Files.list(defaultDirectory).filter(file -> file.getFileName().toString().endsWith(".kbs")).forEach((file) -> {
+      Stream<Path> files = Files.list(defaultDirectory).filter(file -> file.getFileName().toString().endsWith(".kbs"));
+      files.forEach((file) -> {
         ObjectInputStream ois = null;
         try {
           ois = new ObjectInputStream(new FileInputStream(file.toFile()));

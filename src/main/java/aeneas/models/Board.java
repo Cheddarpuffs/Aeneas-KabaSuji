@@ -27,6 +27,12 @@ public abstract class Board implements java.io.Serializable {
       }
     }
   }
+  
+  public Board(Board board) {
+    this.squares = board.squares;
+    this.hints = board.hints;
+    this.pieces = board.pieces;
+  }
 
   /**
    * Count the number of valid squares on this board
@@ -136,20 +142,31 @@ public abstract class Board implements java.io.Serializable {
     Square[][] squares = new Square[SIZE][SIZE];
     for (PlacedPiece piece : pieces){
       for(Square s : piece.getSquaresInBoardFrame())
-        squares[s.getCol()][s.getRow()] = s;
+        squares[s.getRow()][s.getCol()] = s;
     }
     for (PlacedPiece piece : hints){
       for(Square s : piece.getSquaresInBoardFrame())
-        squares[s.getCol()][s.getRow()] = s;
+        squares[s.getRow()][s.getCol()] = s;
     }
-    for(int i = 0;i<this.squares.length;i++ ){
-      for(int j = 0;j<this.squares.length;j++){
-        if(this.squares[i][j] && squares[i][j] == null){
-          squares[i][j]=new Square(j, i, Board.DEFAULT_COLOR);
+    for(int row = 0;row<this.squares.length;row++ ){
+      for(int col = 0;col<this.squares.length;col++){
+        if(this.squares[row][col] && squares[row][col] == null){
+          squares[row][col]=new Square(row, col, Board.DEFAULT_COLOR);
         }
       }
     }
     return squares;
+  }
+  
+  public int numSquaresRemainig() {
+    int count = 0;
+    for(int j = 0; j < SIZE; j++) {
+      for(int i = 0; i < SIZE; i++) {
+        count += squares[j][i] && (getPieceAtLocation(j, i) == null) ? 1 : 0;
+      }
+    }
+
+    return count;
   }
 
   public boolean[][] getSquares(){

@@ -21,9 +21,9 @@ public class ModelTest {
   @Test
   public void testLevelCount() {
     Model m = new Model();
-    assertFalse(m.getMetadata(m.getLevel(0)).isLocked());
-    assertEquals(0, m.getMetadata(m.getLevel(0)).getStarsEarned());
-    for(int i = 1; i < 15; i++) {
+    assertFalse(m.getMetadata(m.getLevel(1)).isLocked());
+    assertEquals(0, m.getMetadata(m.getLevel(1)).getStarsEarned());
+    for(int i = 2; i < 15; i++) {
       assertTrue(m.getMetadata(m.getLevel(i)).isLocked());
       assertEquals(0, m.getMetadata(m.getLevel(i)).getStarsEarned());
     }

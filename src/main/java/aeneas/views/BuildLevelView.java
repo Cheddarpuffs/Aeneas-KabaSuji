@@ -100,11 +100,11 @@ public class BuildLevelView extends StackPane implements Initializable {
   private ArrayList<LevelWidgetView> levelViews;
   private Model model;
 
-  BuildLevelView(MainView mainView, ArrayList<LevelWidgetView> levelViews, LevelWidgetView levelView, Model model) {
-    this.levelView = levelView;
+  BuildLevelView(MainView mainView, ArrayList<LevelWidgetView> levelViews, Level level, Model model) {
+    this.levelView = level.makeCorrespondingView();
     this.levelViews = levelViews;
     this.model = model;
-    this.levelModel = levelView.getLevelModel();
+    this.levelModel = level;
     this.mainView = mainView;
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BuildLevel.fxml"));
@@ -153,7 +153,7 @@ public class BuildLevelView extends StackPane implements Initializable {
         .addListener((ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) -> {
           if (new_toggle != null) {
             LevelWidgetView view = (LevelWidgetView) ((RadioButton) new_toggle).getUserData();
-            this.levelModel = view.getLevelModel();
+            this.levelModel = view.getLevelModel(this.levelModel);
             this.settingsBox.getChildren().set(1, view.getPanel());
           }
         });

@@ -29,8 +29,10 @@ public abstract class LevelWidgetView {
   /**
    * @return the levelModel
    */
-  public Level getLevelModel() {
-    return levelModel;
+  public abstract Level getLevelModel(Level levelModel);
+  
+  public Level getDefaultLevelModel() {
+    return this.levelModel;
   }
 
   public abstract RadioButton getButton();

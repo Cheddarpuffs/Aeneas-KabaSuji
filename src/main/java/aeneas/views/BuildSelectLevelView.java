@@ -36,8 +36,8 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
   private JFXButton editLevel;
 
   private MainView mainView;
-  private LevelWidgetView levelViewToSwitchTo;
-  private HashMap<String, LevelWidgetView> levelMap = new HashMap<String, LevelWidgetView>();
+  private Level levelToSwitchTo;
+  private HashMap<String, Level> levelMap = new HashMap<>();
 
   BuildSelectLevelView(MainView mainView) {
     this.mainView = mainView;
@@ -52,7 +52,7 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
   }
 
   private LevelWidgetView createDefaultLevelView() {
-    Bullpen defaultBullpen  = new Bullpen(BullpenLogic.editorLogic());
+    Bullpen defaultBullpen  = new Bullpen(BullpenLogic.puzzleLogic());
     PuzzleLevel defaultLevel = new PuzzleLevel(defaultBullpen);
     return new PuzzleWidgetView(defaultLevel);
   }
@@ -67,12 +67,12 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
         String path = l.getText();
 
         if (path.equals(createNewLevelLabel.getText())) {
-          levelViewToSwitchTo = createDefaultLevelView();
-          mainView.switchToBuildLevelView(levelViewToSwitchTo);
+          levelToSwitchTo = createDefaultLevelView().getDefaultLevelModel();
+          mainView.switchToBuildLevelView(levelToSwitchTo);
         } else {
-          levelViewToSwitchTo = levelMap.get(path);
+          levelToSwitchTo = levelMap.get(path);
 
-          if (levelViewToSwitchTo == null) {
+          if (levelToSwitchTo == null) {
             System.out.println("couldn't find file name " + path);
           }
         }
@@ -80,7 +80,7 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
     });
 
     editLevel.setOnMouseClicked((e) -> {
-      mainView.switchToBuildLevelView(levelViewToSwitchTo);
+      mainView.switchToBuildLevelView(levelToSwitchTo);
     });
 
     openFile.setOnMouseClicked((e) -> {
@@ -88,10 +88,11 @@ public class BuildSelectLevelView extends BorderPane implements Initializable {
       if (loadFile == null)
         return;
       try {
-        Level newLevel = Level.loadLevel(loadFile);
-        this.levelViewToSwitchTo = newLevel.makeCorrespondingView();
+        levelToSwitchTo = Level.loadLevel(loadFile);
+        
+        //this.l = newLevel.makeCorrespondingView();
         String path = loadFile.getAbsolutePath();
-        levelMap.put(path, this.levelViewToSwitchTo);
+        levelMap.put(path, levelToSwitchTo);
         this.fileList.getItems().add(new Label(path));
       } catch (IOException i) {
         System.out.println("Error occurred opening file.");

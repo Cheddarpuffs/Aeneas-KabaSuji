@@ -6,6 +6,7 @@ import aeneas.controllers.ChildDraggedListener;
 import aeneas.models.Bullpen;
 import aeneas.models.Model;
 import aeneas.models.Piece;
+import aeneas.models.PieceFactory;
 import aeneas.models.Square;
 import aeneas.views.PieceView.PieceSource;
 import javafx.geometry.Pos;
@@ -48,13 +49,11 @@ public class BullpenView implements ChildDraggedListener, PieceSource {
       Dragboard db = event.getDragboard();
       Piece pieceModel = (Piece) db.getContent(Piece.dataFormat);
 
-      Pane piecePane = new Pane();
-      PieceView pieceView = new PieceView(levelView, pieceModel, model, SQUARE_SIZE);
-      pieceView.setOnChildDraggedListener(this);
-      piecePane.getChildren().add(pieceView);
-      values.add(piecePane);
-      bullpenBox.getChildren().add(piecePane);
-      model.getLatestDragSource().dragSuccess();
+      bullpen.addPiece(pieceModel);
+      if(model.getLatestDragSource() != null && model.getLatestDragSource() != this) {
+        model.getLatestDragSource().dragSuccess();
+      }
+      refresh();
 
       // this might change we we actually implement it,
       // such as if they drop it on a square that doesn't exist
@@ -109,13 +108,19 @@ public class BullpenView implements ChildDraggedListener, PieceSource {
   @Override
   public void returnPiece() {
     if(pieceBeingDragged != null) {
-      bullpenBox.getChildren().add(pieceBeingDragged);
+      bullpen.addPiece(pieceBeingDragged.pieceModel);
+      refresh();
       pieceBeingDragged = null;
     }
   }
 
   @Override
   public void dragSuccess() {
+    if(bullpen.getLogic().isRandom()) {
+      int pieceIndex = (int)(Math.random()*35);
+      bullpen.addPiece(PieceFactory.getPieces()[pieceIndex]);
+    }
+    refresh();
     pieceBeingDragged = null;
   }
 }
