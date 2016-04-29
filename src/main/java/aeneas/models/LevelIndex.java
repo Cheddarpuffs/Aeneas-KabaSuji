@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  *
@@ -18,8 +19,13 @@ import java.util.HashMap;
 public class LevelIndex {
   HashMap<Integer, Level> levels;
 
+  public final String defaultLevelPath;
+
   LevelIndex() {
     levels = new HashMap<>();
+    // TODO: Consider changing this path.
+    String homeDir = System.getenv("HOME");
+    defaultLevelPath = homeDir + "/.aeneas-kabasuji";
     reindex();
   }
 
@@ -29,22 +35,21 @@ public class LevelIndex {
     ArrayList<Level> defaultLevels = LevelGenerator.generateDefaultLevels();
     for (int i = 0; i < defaultLevels.size(); i++) {
       Level l = defaultLevels.get(i);
-      l.levelNumber = i + 1;
-      levels.put(i, l);
+      l.levelNumber = i+1;
+      levels.put(i+1, l);
     }
 
-    // honestly we need to change this path.
-    String homeDir = System.getenv("HOME");
-    String defaultLevelPath = homeDir + "/.aeneas-kabasuji";
     Path defaultDirectory = (new File(defaultLevelPath)).toPath();
 
     if (!Files.exists(defaultDirectory)) {
-      System.err.println("Error loading levels. Directory '" + defaultDirectory + "' does not exist.");
+      new File(defaultLevelPath).mkdir();
+      System.out.println("Directory '" + defaultDirectory + "' does not exist; it will be created.");
       return;
     }
 
     try {
-      Files.list(defaultDirectory).filter(file -> file.getFileName().toString().endsWith(".kbs")).forEach((file) -> {
+      Stream<Path> files = Files.list(defaultDirectory).filter(file -> file.getFileName().toString().endsWith(".kbs"));
+      files.forEach((file) -> {
         ObjectInputStream ois = null;
         try {
           ois = new ObjectInputStream(new FileInputStream(file.toFile()));

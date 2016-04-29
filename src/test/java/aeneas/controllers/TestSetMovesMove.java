@@ -30,7 +30,6 @@ public class TestSetMovesMove {
     IMove move = new SetMovesMove(nullLevel, 100);
     assertFalse(move.isValid());
     assertFalse(move.execute());
-    assertFalse(move.undo());
   }
 
   // Note: testPuzzleLevel() and testReleasELevel() will
@@ -69,6 +68,5 @@ public class TestSetMovesMove {
     IMove move = new SetMovesMove(test, -100);
     assertFalse(move.isValid());
     assertFalse(move.execute());
-    assertFalse(move.undo());
   }
 }

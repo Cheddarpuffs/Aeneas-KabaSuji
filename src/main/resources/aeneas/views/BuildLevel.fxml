@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.geometry.*?>
@@ -66,15 +67,19 @@
           <VBox fx:id="sizing" spacing="10" alignment="TOP_LEFT">
             <HBox spacing="5" alignment="CENTER_RIGHT">
               <Label fx:id="rowsLabel" text="Rows" />
-              <Spinner fx:id="rowSpinner" prefWidth="70" min="0" max="12"
-                initialValue="12">
+              <Spinner fx:id="rowSpinner" prefWidth="70">
+                <valueFactory>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="12" initialValue="12"/>
+                </valueFactory>
                 <editable>true</editable>
               </Spinner>
             </HBox>
             <HBox spacing="5" alignment="CENTER_RIGHT">
               <Label fx:id="columnsLabel" text="Columns" />
-              <Spinner fx:id="columnSpinner" prefWidth="70" min="0" max="12"
-                initialValue="12">
+              <Spinner fx:id="columnSpinner" prefWidth="70">
+                <valueFactory>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="12" initialValue="12"/>
+                </valueFactory>
                 <editable>true</editable>
               </Spinner>
             </HBox>

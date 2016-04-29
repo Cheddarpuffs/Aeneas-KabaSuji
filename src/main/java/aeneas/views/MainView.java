@@ -29,7 +29,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -98,10 +100,10 @@ public class MainView extends StackPane implements Initializable {
       e.printStackTrace();
     }
 
-    // create the different types of levels
-    levelViews.add(new PuzzleWidgetView(new PuzzleLevel(new Bullpen(BullpenLogic.puzzleLogic()))));
-    levelViews.add(new LightningWidgetView(new LightningLevel(new Bullpen(BullpenLogic.lightningLogic()), 0)));
-    levelViews.add(new ReleaseWidgetView(new ReleaseLevel(new Bullpen(BullpenLogic.releaseLogic()), new ReleaseBoard(null))));
+    //create the different types of levels
+    levelViews.add(new PuzzleWidgetView(new PuzzleLevel(new Bullpen(BullpenLogic.puzzleLogic())), model));
+    levelViews.add(new LightningWidgetView(new LightningLevel(new Bullpen(BullpenLogic.lightningLogic()), 0), model));
+    levelViews.add(new ReleaseWidgetView(new ReleaseLevel(new Bullpen(BullpenLogic.releaseLogic()), new ReleaseBoard()), model));
   }
 
   public void switchToWelcomeView() {
@@ -122,8 +124,8 @@ public class MainView extends StackPane implements Initializable {
     content.getChildren().add(buildSelectLevelView);
   }
 
-  public void switchToBuildLevelView(LevelWidgetView levelView) {
-    BuildLevelView buildLevelView = new BuildLevelView(this, levelViews, levelView, model);
+  public void switchToBuildLevelView(Level level) {
+    BuildLevelView buildLevelView = new BuildLevelView(this, levelViews, level, model);
     paneStack.push(buildLevelView);
     content.getChildren().clear();
     content.getChildren().add(buildLevelView);
@@ -138,6 +140,7 @@ public class MainView extends StackPane implements Initializable {
   }
 
   public void switchToPlaySelectLevelView() {
+    playSelectLevelView.refresh();
     paneStack.push(playSelectLevelView);
     content.getChildren().clear();
     content.getChildren().add(playSelectLevelView);
@@ -185,13 +188,10 @@ public class MainView extends StackPane implements Initializable {
       dialog.show(this);
     });
 
-    content.setOnDragExited((e) -> {
-      // eventually return a piece to where it came
-      // this case is tough because this also fires on valid drops
-    });
-
     this.setOnDragDropped((e) -> {
-        model.getLatestDragSource().returnPiece();
+      model.getLatestDragSource().returnPiece();
+    });
+    this.setOnDragExited((e) -> {
     });
 
     // yes, we need this
@@ -205,12 +205,16 @@ public class MainView extends StackPane implements Initializable {
 
   public File showSaveDialog() {
     FileChooser fileChooser = new FileChooser();
+    File initialDirectory = new File(model.getLevelIndex().defaultLevelPath);
+    fileChooser.setInitialDirectory(initialDirectory);
     fileChooser.setTitle("Save Level");
     return fileChooser.showSaveDialog(stage);
   }
 
   public File showOpenDialog() {
     FileChooser fileChooser = new FileChooser();
+    File initialDirectory = new File(model.getLevelIndex().defaultLevelPath);
+    fileChooser.setInitialDirectory(initialDirectory);
     fileChooser.setTitle("Open Existing Level");
     return fileChooser.showOpenDialog(stage);
   }
@@ -220,10 +224,17 @@ public class MainView extends StackPane implements Initializable {
     // the current node should always be in the stack,
     // so only remove and go back if there's multiple things on the stack
     if (paneStack.size() > 1) {
+
       paneStack.pop();
+      // This is really ugly. Probably to be replaced with an interface for the views or something
+     if(paneStack.peek() instanceof PlaySelectLevelView) {
+        ((PlaySelectLevelView)paneStack.peek()).refresh();
+      }
       content.getChildren().clear();
       content.getChildren().add(paneStack.peek());
     }
   }
+
+  public Model getModel() { return model; }
 
 }

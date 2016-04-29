@@ -42,7 +42,6 @@ public class TestSetTimeMove {
     IMove move = new SetTimeMove(nullLevel, 100);
     assertFalse(move.isValid());
     assertFalse(move.execute());
-    assertFalse(move.undo());
   }
 
   @Test
@@ -51,6 +50,5 @@ public class TestSetTimeMove {
     IMove move = new SetMovesMove(test, -100);
     assertFalse(move.isValid());
     assertFalse(move.execute());
-    assertFalse(move.undo());
   }
 }

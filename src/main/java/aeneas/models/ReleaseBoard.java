@@ -23,6 +23,11 @@ public class ReleaseBoard extends Board implements java.io.Serializable {
 
   }
 
+  public ReleaseBoard(Board board) {
+    super(board);
+    this.numbers = new ArrayList<>();
+  }
+
 
   /**
    * Gets all squares on the board, including release numbers.
@@ -40,5 +45,15 @@ public class ReleaseBoard extends Board implements java.io.Serializable {
 
   public ArrayList<ReleaseNumber> getNumbers() {
     return numbers;
+  }
+
+  @Override
+  public Object clone() {
+    ReleaseBoard newBoard = new ReleaseBoard();
+    super.copy(this, newBoard);
+    for (ReleaseNumber num : numbers) {
+      newBoard.numbers.add((ReleaseNumber)num.clone());
+    }
+    return newBoard;
   }
 }

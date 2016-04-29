@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 
 /**
  * View class to display a board
- * 
+ *
  * @author Logan Tutt
  * @author Joseph Martin
  */
@@ -39,13 +39,23 @@ public class BoardView extends GridPane implements PieceSource {
     public void squareDropped(int row, int col);
   }
 
+  public interface RefreshListener {
+    public void refresh();
+  }
+
   SquareView[][] grid = new SquareView[Board.SIZE][Board.SIZE];
   Board board;
+  Model gameModel;
   private int dragDropRow = 0, dragDropCol = 0;
   private SquareClickListener clickListener;
   private SquareDragListener dragListener;
   private SquareDropListener dropListener;
-  private PlacedPiece pieceBeingDragged;
+  private RefreshListener refreshListener;
+  private PlacedPiece pieceBeingDragged = null;
+
+  public void setRefreshListener(RefreshListener listener) {
+    this.refreshListener = listener;
+  }
 
   /**
    * Initialized the board with grey squares
@@ -57,23 +67,24 @@ public class BoardView extends GridPane implements PieceSource {
   public BoardView(Pane levelPane, Model model, Board board) {
     clickListener = null;
     this.board = board;
+    this.gameModel = model;
 
     initializeSquares();
-    
+
     this.setOnDragDetected((event) -> {
       PlacedPiece draggedPiece = this.board.getPieceAtLocation(dragDropRow, dragDropCol);
-      Piece pieceModel = draggedPiece.getPiece();
-     
+
       //check there's a piece at the location
       if (draggedPiece != null){
-        
+        Piece pieceModel = draggedPiece.getPiece();
+
         //remove the piece from the board
         this.board.removePiece(draggedPiece);
         this.pieceBeingDragged = draggedPiece;
         model.setLatestDragSource(this);
 
         refresh();
-        
+
         Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
         ClipboardContent content = new ClipboardContent();
         content.put(Piece.dataFormat, pieceModel);
@@ -93,7 +104,7 @@ public class BoardView extends GridPane implements PieceSource {
         event.consume();
       }
     });
-    
+
     // This handle the drop of a piece on the board
     this.setOnDragDropped((DragEvent event) -> {
       Dragboard db = event.getDragboard();
@@ -103,11 +114,17 @@ public class BoardView extends GridPane implements PieceSource {
 
       PlacedPiece placedPiece = new PlacedPiece(piece, dragDropRow, dragDropCol);
       boolean added = this.board.addPiece(placedPiece);
-      
+
       refresh();
-      
+
       if (!added){
-        
+        model.getLatestDragSource().returnPiece();
+      } else {
+        model.getLatestDragSource().dragSuccess();
+      }
+
+      if(refreshListener != null) {
+        refreshListener.refresh();
       }
 
       // this might change we we actually implement it,
@@ -126,42 +143,43 @@ public class BoardView extends GridPane implements PieceSource {
 
   private void initializeSquares() {
     Square[][] squares = board.assembleSquares();
-    for (int i = 0; i < Board.SIZE; i++) {
-      for (int j = 0; j < Board.SIZE; j++) {
-        grid[i][j] = new SquareView(SQUARE_SIZE, squares[i][j]);
-        final int row = j;
-        final int col = i;
+    for (int row = 0; row < Board.SIZE; row++) {
+      for (int col = 0; col < Board.SIZE; col++) {
+        grid[row][col] = new SquareView(SQUARE_SIZE, squares[row][col]);
+        final int r = row;
+        final int c = col;
 
-        grid[i][j].setOnMouseClicked((e) -> {
+        grid[row][col].setOnMouseClicked((e) -> {
           if (clickListener != null) {
-            clickListener.squareClicked(row, col);
+            clickListener.squareClicked(r, c);
           }
         });
 
-        grid[i][j].setOnDragDetected((e) -> {
-          this.dragDropCol = col;
-          this.dragDropRow = row;
+        grid[row][col].setOnDragDetected((e) -> {
+          this.dragDropCol = c;
+          this.dragDropRow = r;
           if (dropListener != null) {
-            dragListener.squareDragged(row, col);
+            dragListener.squareDragged(r, c);
           }
         });
 
-        grid[i][j].setOnDragOver((e) -> {
+        grid[row][col].setOnDragOver((e) -> {
           e.acceptTransferModes(TransferMode.MOVE);
           e.consume();
         });
 
-        grid[i][j].setOnDragDropped((e) -> {
-          this.dragDropCol = col;
-          this.dragDropRow = row;
+        grid[row][col].setOnDragDropped((e) -> {
+          this.dragDropCol = c;
+          this.dragDropRow = r;
           if (dropListener != null) {
-            dropListener.squareDropped(row, col);
+            dropListener.squareDropped(r, c);
           }
         });
-        this.add(grid[i][j], i, j);
+
+        this.add(grid[row][col], col, row);
       }
     }
-    
+
   }
 
   public void setSquareClickListener(SquareClickListener listener) {
@@ -181,16 +199,25 @@ public class BoardView extends GridPane implements PieceSource {
    */
   public void refresh() {
     Square[][] squares = board.assembleSquares();
-    for (int i = 0; i < Board.SIZE; i++) {
-      for (int j = 0; j < Board.SIZE; j++) {
-        grid[i][j].refresh(squares[i][j]);
+    for (int row = 0; row < Board.SIZE; row++) {
+      for (int col = 0; col < Board.SIZE; col++) {
+        assert(squares[row][col] != null);
+        grid[row][col].refresh(squares[row][col]);
       }
     }
   }
 
   @Override
   public void returnPiece() {
-    this.board.addPiece(pieceBeingDragged);
-    refresh();
+    if(pieceBeingDragged != null) {
+      this.board.addPiece(pieceBeingDragged);
+      pieceBeingDragged = null;
+      refresh();
+    }
+  }
+
+  @Override
+  public void dragSuccess() {
+    pieceBeingDragged = null;
   }
 }

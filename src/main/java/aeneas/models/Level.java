@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import aeneas.views.LevelWidgetView;
 
+import javafx.scene.control.RadioButton;
+
 /**
  *
  * @author Joseph Martin
@@ -18,6 +20,7 @@ public abstract class Level implements java.io.Serializable {
   Bullpen bullpen;
 
   transient int levelNumber;
+  transient boolean active = false;
   boolean prebuilt;
 
   public int getLevelNumber() {
@@ -93,6 +96,12 @@ public abstract class Level implements java.io.Serializable {
   }
 
   public void reset() {
+    Board board = getBoard();
+    Bullpen bullpen = getBullpen();
+    for (PlacedPiece piece : board.getPieces()) {
+      bullpen.addPiece(piece.piece);
+    }
+    board.getPieces().clear();
   }
 
   /**
@@ -135,5 +144,26 @@ public abstract class Level implements java.io.Serializable {
     return bullpen.pieces;
   }
 
-  public abstract LevelWidgetView makeCorrespondingView();
+  public abstract LevelWidgetView makeCorrespondingView(Model model);
+
+  public abstract RadioButton getButton();
+
+  public abstract String getIconName();
+
+  public void start() { active = true; }
+  public void stop() { active = false; }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void copy(Level src, Level dst) {
+    dst.bullpen = (Bullpen)src.bullpen.clone();
+    dst.prebuilt = src.prebuilt;
+    dst.active = src.active;
+    dst.levelNumber = src.levelNumber;
+  }
+
+  @Override
+  public abstract Object clone();
 }

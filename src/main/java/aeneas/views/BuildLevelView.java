@@ -12,15 +12,20 @@ import com.jfoenix.controls.JFXDialog.DialogTransition;
 import com.jfoenix.controls.JFXListView;
 
 import aeneas.controllers.AddPieceMove;
+import aeneas.controllers.BoardSizeController;
+import aeneas.controllers.ChangeLevelTypeMove;
 import aeneas.controllers.ChildDraggedListener;
 import aeneas.controllers.IMove;
 import aeneas.controllers.ToggleTileMove;
+import aeneas.controllers.UndoRedoController;
 import aeneas.models.Level;
 import aeneas.models.Model;
 import aeneas.models.Piece;
 import aeneas.models.PieceFactory;
 import aeneas.models.Square;
+
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,6 +82,12 @@ public class BuildLevelView extends StackPane implements Initializable {
   private JFXButton saveButton;
 
   @FXML
+  private JFXButton undoButton;
+
+  @FXML
+  private JFXButton redoButton;
+
+  @FXML
   private HBox settingsBox;
 
   @FXML
@@ -99,11 +110,11 @@ public class BuildLevelView extends StackPane implements Initializable {
   private ArrayList<LevelWidgetView> levelViews;
   private Model model;
 
-  BuildLevelView(MainView mainView, ArrayList<LevelWidgetView> levelViews, LevelWidgetView levelView, Model model) {
-    this.levelView = levelView;
+  BuildLevelView(MainView mainView, ArrayList<LevelWidgetView> levelViews, Level level, Model model) {
+    this.levelView = level.makeCorrespondingView(model);
     this.levelViews = levelViews;
     this.model = model;
-    this.levelModel = levelView.getLevelModel();
+    this.levelModel = level;
     this.mainView = mainView;
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BuildLevel.fxml"));
@@ -118,11 +129,23 @@ public class BuildLevelView extends StackPane implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     this.boardView = new BoardView(this, model, levelModel.getBoard());
-    this.bullpenView = new BullpenView(model, bullpenBox, (Pane) this);
+    this.bullpenView = new BullpenView(model, levelModel.getBullpen(), bullpenBox, (Pane) this);
+    bullpenView.refresh();
 
     VBox.setMargin(boardView, new Insets(10, 10, 10, 10));
     centerBox.setAlignment(Pos.TOP_RIGHT);
     centerBox.getChildren().add(boardView);
+
+    rowSpinner.valueProperty().addListener(new BoardSizeController(model, this));
+    columnSpinner.valueProperty().addListener(new BoardSizeController(model, this));
+
+    undoButton.setOnMouseClicked((e) -> {
+        new UndoRedoController(this, model).doUndo();
+    });
+
+    redoButton.setOnMouseClicked((e) -> {
+        new UndoRedoController(this, model).doRedo();
+    });
 
     saveButton.setOnMouseClicked((e) -> {
       File saveFile = mainView.showSaveDialog();
@@ -133,7 +156,7 @@ public class BuildLevelView extends StackPane implements Initializable {
         // level will change over time.
         this.levelModel.save(saveFile);
       } catch (IOException i) {
-        System.out.println("Error occurred in opening file.");
+        System.out.println("Error occurred in saving file.");
       }
     });
 
@@ -150,10 +173,13 @@ public class BuildLevelView extends StackPane implements Initializable {
     // TODO: Consider moving this to a separate class.
     levelType.selectedToggleProperty()
         .addListener((ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle) -> {
-          if (new_toggle != null) {
+          if (new_toggle != null && !toggle.equals(new_toggle)) {
             LevelWidgetView view = (LevelWidgetView) ((RadioButton) new_toggle).getUserData();
-            this.levelModel = view.getLevelModel();
+            Level newLevel = view.resetLevelModel(this.levelModel);
+            IMove move = new ChangeLevelTypeMove(this, newLevel);
+            if (move.execute()) model.addNewMove(move);
             this.settingsBox.getChildren().set(1, view.getPanel());
+            this.levelView = view;
           }
         });
 
@@ -185,10 +211,34 @@ public class BuildLevelView extends StackPane implements Initializable {
           IMove move = new AddPieceMove(levelModel.getBullpen(), pieceModel.clone());
           if (move.execute()){
             model.addNewMove(move);
-            bullpenView.refresh(levelModel.getBullpen());
+            bullpenView.refresh();
           }
         });
       }
     });
+  }
+
+  public void refresh() {
+    boardView.refresh();
+    bullpenView.refresh();
+    this.levelType.selectToggle(levelModel.getButton());
+    this.levelView = (LevelWidgetView)levelType.getSelectedToggle().getUserData();
+    this.levelView.refresh();
+  }
+
+  public Spinner<Integer> getRowSpinner() {
+    return rowSpinner;
+  }
+
+  public Spinner<Integer> getColumnSpinner() {
+    return columnSpinner;
+  }
+
+  public Level getLevelModel() {
+    return levelModel;
+  }
+
+  public void setLevelModel(Level level) {
+    this.levelModel = level;
   }
 }

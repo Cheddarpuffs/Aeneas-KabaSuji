@@ -40,4 +40,9 @@ public class ReleaseNumber implements java.io.Serializable {
   public void setCol(int col) { this.col = col; }
   public void setColor(Color color) { this.color = color.toString(); }
   public void setValue(int val) { this.val = val; }
+
+  @Override
+  public Object clone() {
+    return new ReleaseNumber(this.row, this.col, Color.web(this.color), this.val);
+  }
 }

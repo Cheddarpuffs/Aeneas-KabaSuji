@@ -1,7 +1,10 @@
 package aeneas.models;
 
+import aeneas.models.Bullpen.BullpenLogic;
 import aeneas.views.LevelWidgetView;
 import aeneas.views.PuzzleWidgetView;
+
+import javafx.scene.control.RadioButton;
 
 /**
  *
@@ -13,8 +16,8 @@ implements java.io.Serializable, Level.LevelWithMoves {
 
   PuzzleBoard board;
 
-  private int moves;
-
+  private int movesAllowed;
+  private transient int movesLeft;
 
   /**
    * Constructor
@@ -50,12 +53,14 @@ implements java.io.Serializable, Level.LevelWithMoves {
 
   public PuzzleLevel(Level src) {
     super(src);
+    this.bullpen.logic = BullpenLogic.puzzleLogic();
+    this.board = new PuzzleBoard(src.getBoard());
   }
 
 
   @Override
   public int getStarsEarned() {
-    return Math.max(0, 3 - bullpen.pieces.size());
+    return Math.max(0, 3 - board.numSquaresRemaining()/6);
   }
 
   @Override
@@ -70,13 +75,38 @@ implements java.io.Serializable, Level.LevelWithMoves {
   }
 
   @Override
-  public void setAllowedMoves(int moves) { this.moves = moves; }
+  public void setAllowedMoves(int movesAllowed) { this.movesAllowed = movesAllowed; }
 
   @Override
-  public int getAllowedMoves() { return moves; }
+  public int getAllowedMoves() { return movesAllowed; }
 
   @Override
-  public LevelWidgetView makeCorrespondingView() {
-    return new PuzzleWidgetView(this);
+  public LevelWidgetView makeCorrespondingView(Model model) {
+    return new PuzzleWidgetView(this, model);
+  }
+
+  @Override
+  public RadioButton getButton() {
+    return PuzzleWidgetView.button;
+  }
+
+  public String getIconName() {
+    return "PUZZLE_PIECE";
+  }
+
+  @Override
+  public Object clone() {
+    PuzzleLevel newLevel =
+      new PuzzleLevel((Bullpen)this.bullpen.clone(),
+                         (PuzzleBoard)this.board.clone(), this.prebuilt);
+    super.copy(this, newLevel);
+    newLevel.movesAllowed = this.movesAllowed;
+    return newLevel;
+  }
+
+  @Override
+  public void reset() {
+    super.reset();
+    this.movesLeft = movesAllowed;
   }
 }

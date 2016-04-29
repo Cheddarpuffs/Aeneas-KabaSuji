@@ -47,6 +47,9 @@ public class Model {
     achievements = new ArrayList<>();
     index = new LevelIndex();
 
+    undoStack = new Stack<IMove>();
+    redoStack = new Stack<IMove>();
+
     levelMetadata.put(1, new Level.Metadata(0, false));
   }
 
@@ -91,6 +94,11 @@ public class Model {
       if(getMetadata(activeLevel).getStarsEarned() < stars) {
         Level.Metadata m = levelMetadata.getOrDefault(activeLevel.getLevelNumber(), new Level.Metadata());
         m.setStarsEarned(stars);
+        if(stars > 0) {
+          Level.Metadata nextMetadata = levelMetadata.getOrDefault(activeLevel.getLevelNumber()+1, new Level.Metadata());
+          nextMetadata.setLocked(false);
+          levelMetadata.put(activeLevel.getLevelNumber()+1, nextMetadata);
+        }
         levelMetadata.put(activeLevel.getLevelNumber(), m);
       }
     }
@@ -123,7 +131,7 @@ public class Model {
   public boolean redoLastMove() {
     if(redoStack.size() > 0) {
       IMove m = redoStack.peek();
-      boolean success = m.undo();
+      boolean success = m.execute();
       if(success) {
         redoStack.pop();
         undoStack.add(m);
@@ -141,7 +149,7 @@ public class Model {
    * @param move the move to add
    */
   public void addNewMove(IMove move){
-
+    undoStack.add(move);
   }
 
   public void saveLevelMetadata(File file) throws IOException {
@@ -168,9 +176,22 @@ public class Model {
   }
 
   public void setLatestDragSource(PieceSource latestDragSource) {
-    this.latestDragSource = latestDragSource; 
+    this.latestDragSource = latestDragSource;
   }
   public PieceSource getLatestDragSource() {
     return latestDragSource;
+  }
+
+  public void setActiveLevel(Level levelModel) {
+    activeLevel = levelModel;
+  }
+
+  public Level getActiveLevel() {
+    return activeLevel;
+  }
+
+  public LevelIndex getLevelIndex() { return index; }
+  public void refreshLevelIndex() {
+    index.reindex();
   }
 }

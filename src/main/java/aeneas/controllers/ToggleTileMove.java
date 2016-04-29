@@ -10,10 +10,7 @@ import aeneas.models.Level;
  * @author Joseph Martin
  */
 public class ToggleTileMove implements IMove {
-
-
   Level level;
-
 
   int row;
   int col;

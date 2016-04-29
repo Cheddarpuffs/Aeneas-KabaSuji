@@ -18,11 +18,13 @@ public class Bullpen implements java.io.Serializable {
   public static class BullpenLogic implements java.io.Serializable {
     private boolean canReturnPiece;
     private boolean canAddNewPiece;
+    private boolean isRandom;
 
     public static BullpenLogic editorLogic() {
       BullpenLogic b = new BullpenLogic();
       b.canAddNewPiece = true;
       b.canReturnPiece = true;
+      b.isRandom = false;
       return b;
     }
 
@@ -30,6 +32,7 @@ public class Bullpen implements java.io.Serializable {
       BullpenLogic b = new BullpenLogic();
       b.canAddNewPiece = false;
       b.canReturnPiece = true;
+      b.isRandom = false;
       return b;
     }
 
@@ -37,6 +40,7 @@ public class Bullpen implements java.io.Serializable {
       BullpenLogic b = new BullpenLogic();
       b.canAddNewPiece = false;
       b.canReturnPiece = false;
+      b.isRandom = true;
       return b;
     }
 
@@ -44,6 +48,7 @@ public class Bullpen implements java.io.Serializable {
       BullpenLogic b = new BullpenLogic();
       b.canAddNewPiece = false;
       b.canReturnPiece = false;
+      b.isRandom = false;
       return b;
     }
 
@@ -58,7 +63,12 @@ public class Bullpen implements java.io.Serializable {
      * @return the canAddNewPiece
      */
     public boolean isCanAddNewPiece() {
-      return canAddNewPiece;
+      // Just assume that this is always allowed...
+      return true;
+    }
+
+    public boolean isRandom() {
+      return isRandom;
     }
   }
 
@@ -106,5 +116,17 @@ public class Bullpen implements java.io.Serializable {
    */
   public ArrayList<Piece> getPieces() {
     return pieces;
+  }
+
+  /**
+   * Create a copy of the bullpen.
+   */
+  @Override
+  public Object clone() {
+    Bullpen newBullpen = new Bullpen(this.logic);
+    for (Piece piece: this.pieces) {
+      newBullpen.pieces.add(piece.clone());
+    }
+    return newBullpen;
   }
 }

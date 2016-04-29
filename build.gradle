@@ -31,7 +31,7 @@ jar {
 }
 
 task generateLevels(type:JavaExec) {
-   main = "aeneas.GenerateLevels"
+   main = "aeneas.models.LevelGenerator"
    classpath = sourceSets.main.runtimeClasspath
 }
 

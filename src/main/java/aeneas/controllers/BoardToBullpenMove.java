@@ -9,8 +9,6 @@ import aeneas.models.PlacedPiece;
  *
  */
 public class BoardToBullpenMove implements IMove {
-
-
   Level level;
 
   PlacedPiece piece;
