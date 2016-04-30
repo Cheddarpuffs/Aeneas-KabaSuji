@@ -77,7 +77,7 @@ public class PlaySelectLevelView extends BorderPane implements Initializable {
       JFXButton button = makeLevelButton(level.getLevelNumber(), gameModel.getMetadata(level).isLocked());
       button.setOnMouseClicked((e)->{
         if (!gameModel.getMetadata(level).isLocked()) {
-          mainView.switchToPlayLevelView(level);
+          mainView.switchToPlayLevelView(level.makeCorrespondingView());
           level.reset();
         }
       });

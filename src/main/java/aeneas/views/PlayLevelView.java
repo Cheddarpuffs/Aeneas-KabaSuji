@@ -18,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -34,7 +35,10 @@ public class PlayLevelView extends BorderPane implements Initializable {
   private VBox bullpenBox;
 
   @FXML
-  private Label levelLabel;
+  private HBox settingsBox;
+
+  @FXML
+  private Label levelNumber;
 
   @FXML
   private VBox centerBox;
@@ -44,11 +48,13 @@ public class PlayLevelView extends BorderPane implements Initializable {
 
   private BullpenView bullpenView;
   private BoardView boardView;
+  private LevelWidgetView levelWidget;
   private Level levelModel;
   private Model model;
 
-  PlayLevelView(Level levelModel, Model model) {
-    this.levelModel = levelModel;
+  PlayLevelView(LevelWidgetView levelWidget, Model model) {
+    this.levelWidget = levelWidget;
+    this.levelModel = levelWidget.getLevelModel();
     this.model = model;
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("PlayLevel.fxml"));
@@ -75,6 +81,8 @@ public class PlayLevelView extends BorderPane implements Initializable {
     VBox.setMargin(boardView, new Insets(10, 10, 10, 10));
     centerBox.setAlignment(Pos.TOP_RIGHT);
     centerBox.getChildren().add(boardView);
-  }
 
+    levelNumber.setText(String.valueOf(this.levelModel.getLevelNumber()));
+    settingsBox.getChildren().add(this.levelWidget.getPanel());
+  }
 }

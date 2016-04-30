@@ -130,8 +130,8 @@ public class MainView extends StackPane implements Initializable {
 
   }
 
-  public void switchToPlayLevelView(Level level) {
-    PlayLevelView playLevelView = new PlayLevelView(level, model);
+  public void switchToPlayLevelView(LevelWidgetView levelView) {
+    PlayLevelView playLevelView = new PlayLevelView(levelView, model);
     paneStack.push(playLevelView);
     content.getChildren().clear();
     content.getChildren().add(playLevelView);

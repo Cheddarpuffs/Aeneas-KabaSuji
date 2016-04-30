@@ -18,82 +18,41 @@
   </left>
   <center>
     <VBox fx:id="centerBox" spacing="10" alignment="TOP_CENTER">
-
-      <VBox spacing="10" alignment="TOP_LEFT" style="-fx-background-color:#d1d1d1;">
-        <BorderPane>
-          <left>
-            <HBox alignment="CENTER_LEFT">
-              <Label fx:id="levelLabel" textAlignment="LEFT"
-                styleClass="level-number">
-                Level X
-              </Label>
-
-              <FontAwesomeIconView fx:id="levelTypeIcon"
-                glyphName="BOLT" size="1.5em">
-                <HBox.margin>
-                  <Insets left="5" />
-                </HBox.margin>
-              </FontAwesomeIconView>
-
-              <HBox>
-                <FontAwesomeIconView glyphName="STAR"
-                  size="2em" />
-                <FontAwesomeIconView glyphName="STAR"
-                  size="2em" />
-                <FontAwesomeIconView glyphName="STAR"
-                  size="2em" />
-                <HBox.margin>
-                  <Insets left="30" />
-                </HBox.margin>
-              </HBox>
-            </HBox>
+      <BorderPane style="-fx-background-color:#d1d1d1;">
+        <left>
+          <HBox fx:id="settingsBox" spacing="10">
             <BorderPane.margin>
-              <Insets top="30" left="20" />
+              <Insets top="10" left="10" right="10" bottom="10" />
             </BorderPane.margin>
-          </left>
-          <right>
+          </HBox>
+        </left>
+        <center>
+          <HBox alignment="CENTER_LEFT">
+            <Label fx:id="levelLabel" textAlignment="LEFT"
+                styleClass="level-number" text="Level">
+              <HBox.margin>
+                <Insets right="3"/>
+              </HBox.margin>
+            </Label>
+            <Label fx:id="levelNumber" textAlignment="LEFT"
+                styleClass="level-number"/>
+            <BorderPane.margin>
+              <Insets top="10" left="10" right="10" bottom="10" />
+            </BorderPane.margin>
+          </HBox>
+        </center>
+        <right>
+          <VBox>
             <JFXButton fx:id="resetLevelButton" prefWidth="85"
               prefHeight="30" buttonType="RAISED" text="Reset"
               styleClass="normal-button">
-              <BorderPane.margin>
-                <Insets right="30" top="30" />
-              </BorderPane.margin>
             </JFXButton>
-          </right>
-        </BorderPane>
-
-        <HBox>
-          <Label fx:id="timeLabel" textAlignment="RIGHT"
-            styleClass="level-number" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-              <Insets right="20" left="20" />
-            </HBox.margin>
-            Time Remaining 2:16
-          </Label>
-
-          <!--<Label textAlignment="LEFT" styleClass="level-number" HBox.hgrow="ALWAYS"> -->
-          <!--Moves: 13 -->
-          <!--<HBox.margin> -->
-          <!--<Insets right="20" left="20" /> -->
-          <!--</HBox.margin> -->
-          <!--</Label> -->
-
-          <!--<HBox alignment="CENTER" spacing="10"> -->
-          <!--<Label fx:id="red_release" prefWidth="20" prefHeight="20" style="-fx-background-color:RED"></Label> -->
-          <!--<Label fx:id="blue_release" prefWidth="20" prefHeight="20"
-            style="-fx-background-color:BLUE"></Label> -->
-          <!--<Label fx:id="green_release" prefWidth="20" prefHeight="20"
-            style="-fx-background-color:GREEN"></Label> -->
-          <!--<Label fx:id="black_release" prefWidth="20" prefHeight="20"
-            style="-fx-background-color:BLACK"></Label> -->
-          <!--</HBox> -->
-
-          <VBox.margin>
-            <Insets top="10" bottom="15" />
-          </VBox.margin>
-        </HBox>
-      </VBox>
-
+            <BorderPane.margin>
+              <Insets right="10" left="10" top="10" bottom="10"/>
+            </BorderPane.margin>
+          </VBox>
+        </right>
+      </BorderPane>
     </VBox>
   </center>
 </fx:root>
