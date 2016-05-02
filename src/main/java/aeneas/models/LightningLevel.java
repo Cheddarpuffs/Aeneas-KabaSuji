@@ -69,12 +69,6 @@ public class LightningLevel extends Level implements java.io.Serializable {
   }
 
   @Override
-  public boolean isComplete() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
   public Board getBoard() {
     return board;
   }

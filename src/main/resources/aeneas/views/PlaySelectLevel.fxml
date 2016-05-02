@@ -15,7 +15,7 @@
     <ScrollPane fx:id="scrollpane" fitToWidth="true">
       <VBox alignment="TOP_CENTER">
         <Label fx:id="levelLabel" styleClass="h2-label">
-          Select A Level
+          Select a Level
           <VBox.margin>
             <Insets bottom="20.0" top="30.0" />
           </VBox.margin>

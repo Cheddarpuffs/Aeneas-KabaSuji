@@ -82,12 +82,6 @@ public abstract class Level implements java.io.Serializable {
   }
 
   /**
-   * Check if the level is done
-   * @return true if the level is complete, false otherwise.
-   */
-  public abstract boolean isComplete();
-
-  /**
    * Get the board for this level
    * @return The board used by this level.
    */
