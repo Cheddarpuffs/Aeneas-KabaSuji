@@ -102,7 +102,7 @@
                 styleClass="normal-button" />
             </VBox>
             <VBox alignment="BOTTOM_RIGHT">
-              <FontAwesomeIconView fx:id="deletePiece" glyphName="TRASH"
+              <FontAwesomeIconView fx:id="trash" glyphName="TRASH"
                 size="2em" />
             </VBox>
           </HBox>

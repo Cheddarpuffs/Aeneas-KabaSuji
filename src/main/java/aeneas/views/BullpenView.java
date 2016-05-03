@@ -79,6 +79,7 @@ public class BullpenView implements ChildDraggedListener, DragSource {
         }
         break;
       case ReleaseNum:
+        model.returnDraggableNode();
         break;
       }
 
