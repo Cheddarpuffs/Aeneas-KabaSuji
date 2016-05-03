@@ -13,8 +13,10 @@ import com.jfoenix.controls.JFXListView;
 
 import aeneas.controllers.AddPieceMove;
 import aeneas.controllers.BoardSizeController;
+import aeneas.controllers.BullpenToBoardMove;
 import aeneas.controllers.ChangeLevelTypeMove;
 import aeneas.controllers.ChildDraggedListener;
+import aeneas.controllers.DeleteBoardPieceMove;
 import aeneas.controllers.IMove;
 import aeneas.controllers.ToggleTileMove;
 import aeneas.controllers.UndoRedoController;
@@ -37,6 +39,9 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -215,7 +220,40 @@ public class BuildLevelView extends StackPane implements Initializable, RefreshL
         });
       }
     });
+    this.setOnDragDropped((DragEvent event) -> {
+      Dragboard db = event.getDragboard();
+
+      // use this to draw the piece on the board
+      Piece piece = (Piece) db.getContent(Piece.dataFormat);
+      
+      DragSource source = model.getLatestDragSource();
+
+      if (source instanceof BoardView) {
+        IMove move = new DeleteBoardPieceMove(model, piece);
+      }
+
+      if (!move.execute()){
+        model.getLatestDragSource().returnPiece();
+      } else {
+        model.getLatestDragSource().dragSuccess();
+      }
+
+      refresh();
+
+      // this might change we we actually implement it,
+      // such as if they drop it on a square that doesn't exist
+      event.setDropCompleted(true);
+      event.consume();
+
+    });
+
+    // this is absolutely nessecary
+    this.setOnDragOver((DragEvent event) -> {
+      event.acceptTransferModes(TransferMode.MOVE);
+      event.consume();
+    });
   }
+  
 
   public void refresh() {
     boardView.refresh();
