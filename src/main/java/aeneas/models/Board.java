@@ -116,7 +116,8 @@ public abstract class Board implements java.io.Serializable {
    * @return true If the piece on the board and it was removed, false otherwise.
    */
   public boolean removePiece(PlacedPiece piece) {
-    return pieces.remove(piece);
+    if (piece.getPiece().isHint()) return hints.remove(piece);
+    else return pieces.remove(piece);
   }
 
   /**
