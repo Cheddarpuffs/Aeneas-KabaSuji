@@ -1,13 +1,7 @@
 package aeneas.views;
 
-import aeneas.controllers.IMove;
-import aeneas.controllers.SetMovesMove;
 import aeneas.models.Level;
-import aeneas.models.Level.LevelWithMoves;
-import aeneas.models.Model;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
@@ -34,7 +28,8 @@ public abstract class LevelWidgetView {
   }
 
   /**
-   * @return the levelModel. If levelModel is already of the correct type, then
+   * @param levelModel the level to reset to
+   * @return If levelModel is already of the correct type, then
    *   levelModel will be returned.
    */
   public abstract Level resetLevelModel(Level levelModel);
@@ -44,7 +39,7 @@ public abstract class LevelWidgetView {
   }
 
   public abstract RadioButton getButton();
-  
+
   public abstract void updateValues();
 
 }

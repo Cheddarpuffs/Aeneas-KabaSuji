@@ -8,11 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Stack;
 
-import aeneas.controllers.IMove;
 import aeneas.models.Level.Metadata;
-import aeneas.views.PieceView.PieceSource;
+import aeneas.views.DragSource;
 
 /**
  * Top level entity class for KabaSuji.
@@ -42,7 +40,7 @@ public class Model {
     + "Have fun!"
     ;
 
-  private PieceSource latestDragSource;
+  private DragSource latestDragSource;
 
   public final String helpString = "HELP";
   public final String aboutString = "ABOUT";
@@ -77,11 +75,11 @@ public class Model {
       m = new Level.Metadata();
       levelMetadata.put(level.getLevelNumber(), m);
     }
-    
+
     if(!level.isPrebuilt()) {
       m.setLocked(false);
     }
-    
+
     return m;
   }
 
@@ -145,12 +143,24 @@ public class Model {
     }
   }
 
-  public void setLatestDragSource(PieceSource latestDragSource) {
+  public void setLatestDragSource(DragSource latestDragSource) {
     this.latestDragSource = latestDragSource;
   }
 
-  public PieceSource getLatestDragSource() {
+  public DragSource getLatestDragSource() {
     return latestDragSource;
+  }
+
+  public void returnDraggableNode() {
+    if(latestDragSource != null) {
+      latestDragSource.returnDraggableNode();
+    }
+  }
+
+  public void dragSuccess() {
+    if(latestDragSource != null) {
+      latestDragSource.dragSuccess();
+    }
   }
 
   public void setActiveLevel(Level levelModel) {

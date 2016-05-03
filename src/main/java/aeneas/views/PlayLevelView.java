@@ -86,6 +86,7 @@ public class PlayLevelView extends BorderPane implements Initializable, RefreshL
     });
 
     bullpenView.refresh();
+    bullpenView.setRefreshListener(this);
     levelLabel.setText("Level "+levelModel.getLevelNumber());
 
     levelTypeIcon.setGlyphName(levelModel.getIconName());

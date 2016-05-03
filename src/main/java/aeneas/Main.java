@@ -41,4 +41,9 @@ public class Main extends Application {
     //start the legitimate application!
     launch(args);
   }
+
+  public static boolean isRunningOnMac() {
+    String os = System.getProperty("os.name").toLowerCase();
+    return os.contains("mac")  || os.contains("darwin");
+  }
 }

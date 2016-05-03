@@ -23,95 +23,106 @@
 
 
 <fx:root type="javafx.scene.layout.StackPane" xmlns:fx="http://javafx.com/fxml/1"
-    xmlns="http://javafx.com/javafx/2.2">
+  xmlns="http://javafx.com/javafx/2.2">
   <BorderPane>
-  <left>
-    <BorderPane>
-			<center>
-      <ScrollPane fx:id="scrollpane" fitToWidth="true" style="-fx-background-color:transparent;">
-        <VBox prefWidth="115" fx:id="bullpenBox" spacing="20" alignment="TOP_CENTER" />
-      </ScrollPane>
-			</center>
-			<bottom>
-      <JFXButton fx:id="addPiece" minWidth="50" minHeight="50" styleClass="action-button">
-        <graphic>
-          <FontAwesomeIconView glyphName="PLUS" size="2em" />
-        </graphic>
-        <BorderPane.margin>
-          <Insets left="10" bottom="10" top="10" right="10"/>
-        </BorderPane.margin>
-      </JFXButton>
-			</bottom>
-    </BorderPane>
-  </left>
-  <center>
-    <VBox fx:id="centerBox" spacing="10" alignment="TOP_CENTER">
-
-      <VBox spacing="10" alignment="TOP_LEFT" style="-fx-background-color:#d1d1d1;">
-        <HBox fx:id="settingsBox" spacing="20">
-          <VBox fx:id="levelTypeBox" spacing="10">
-            <Label textAlignment="RIGHT" text="Type" />
-            <VBox fx:id="togglesBox" spacing="4">
-              <fx:define>
-                <ToggleGroup fx:id="levelType" />
-              </fx:define>
+    <left>
+      <BorderPane>
+        <center>
+          <ScrollPane fx:id="scrollpane" fitToWidth="true"
+            style="-fx-background-color:transparent;">
+            <VBox prefWidth="115" fx:id="bullpenBox" spacing="20"
+              alignment="TOP_CENTER" />
+          </ScrollPane>
+        </center>
+        <bottom>
+          <JFXButton fx:id="addPiece" minWidth="50" minHeight="50"
+            styleClass="action-button">
+            <graphic>
+              <FontAwesomeIconView glyphName="PLUS"
+                size="2em" />
+            </graphic>
+            <BorderPane.margin>
+              <Insets left="10" bottom="10" top="10" right="10" />
+            </BorderPane.margin>
+          </JFXButton>
+        </bottom>
+      </BorderPane>
+    </left>
+    <center>
+      <VBox fx:id="centerBox" spacing="10" alignment="TOP_CENTER">
+        <VBox spacing="10" alignment="TOP_LEFT"
+          style="-fx-background-color:#d1d1d1;">
+          <HBox fx:id="settingsBox" spacing="20">
+            <VBox fx:id="levelTypeBox" spacing="10">
+              <Label textAlignment="RIGHT" text="Type" />
+              <VBox fx:id="togglesBox" spacing="4">
+                <fx:define>
+                  <ToggleGroup fx:id="levelType" />
+                </fx:define>
+              </VBox>
+              <HBox.margin>
+                <Insets right="20" left="20" />
+              </HBox.margin>
+            </VBox>
+            <VBox.margin>
+              <Insets top="10" bottom="15" />
+            </VBox.margin>
+            <VBox fx:id="sizing" spacing="10" alignment="TOP_LEFT">
+              <HBox spacing="5" alignment="CENTER_RIGHT">
+                <Label fx:id="rowsLabel" text="Rows" />
+                <Spinner fx:id="rowSpinner" prefWidth="70">
+                  <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory
+                      min="1" max="12" initialValue="12" />
+                  </valueFactory>
+                  <editable>true</editable>
+                </Spinner>
+              </HBox>
+              <HBox spacing="5" alignment="CENTER_RIGHT">
+                <Label fx:id="columnsLabel" text="Columns" />
+                <Spinner fx:id="columnSpinner" prefWidth="70">
+                  <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory
+                      min="1" max="12" initialValue="12" />
+                  </valueFactory>
+                  <editable>true</editable>
+                </Spinner>
+              </HBox>
             </VBox>
 
-            <HBox.margin>
-              <Insets right="20" left="20" />
-            </HBox.margin>
-          </VBox>
-          <VBox.margin>
-            <Insets top="10" bottom="15" />
-          </VBox.margin>
-          <VBox fx:id="sizing" spacing="10" alignment="TOP_LEFT">
-            <HBox spacing="5" alignment="CENTER_RIGHT">
-              <Label fx:id="rowsLabel" text="Rows" />
-              <Spinner fx:id="rowSpinner" prefWidth="70">
-                <valueFactory>
-                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="12" initialValue="12"/>
-                </valueFactory>
-                <editable>true</editable>
-              </Spinner>
-            </HBox>
-            <HBox spacing="5" alignment="CENTER_RIGHT">
-              <Label fx:id="columnsLabel" text="Columns" />
-              <Spinner fx:id="columnSpinner" prefWidth="70">
-                <valueFactory>
-                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="12" initialValue="12"/>
-                </valueFactory>
-                <editable>true</editable>
-              </Spinner>
-            </HBox>
-          </VBox>
+            <VBox spacing="4">
+              <JFXButton fx:id="saveButton" prefWidth="85"
+                prefHeight="30" buttonType="RAISED" text="Save"
+                styleClass="normal-button" />
+              <JFXButton fx:id="undoButton" prefWidth="85"
+                prefHeight="30" buttonType="RAISED" text="Undo"
+                styleClass="normal-button" />
+              <JFXButton fx:id="redoButton" prefWidth="85"
+                prefHeight="30" buttonType="RAISED" text="Redo"
+                styleClass="normal-button" />
+            </VBox>
+            <VBox alignment="BOTTOM_RIGHT">
+              <FontAwesomeIconView fx:id="deletePiece" glyphName="TRASH"
+                size="2em" />
+            </VBox>
+          </HBox>
+        </VBox>
 
-          <VBox spacing="4">
-            <JFXButton fx:id="saveButton" prefWidth="85"
-              prefHeight="30" buttonType="RAISED" text="Save"
-              styleClass="normal-button" />
-            <JFXButton fx:id="undoButton" prefWidth="85"
-              prefHeight="30" buttonType="RAISED" text="Undo"
-              styleClass="normal-button" />
-            <JFXButton fx:id="redoButton" prefWidth="85"
-              prefHeight="30" buttonType="RAISED" text="Redo"
-              styleClass="normal-button" />
-          </VBox>
-
-        </HBox>
       </VBox>
-    </VBox>
-  </center>
+
+    </center>
   </BorderPane>
 
-	<JFXDialog fx:id="piecePickerDialog">
-		<JFXDialogLayout>
-			<heading>
+  <JFXDialog fx:id="piecePickerDialog">
+    <JFXDialogLayout>
+      <heading>
         <Label>Pick a Piece</Label>
-			</heading>
-			<body>
-        <FlowPane fx:id="piecesPane" prefWrapLength="300" hgap="20" vgap="20">
+      </heading>
+      <body>
+        <FlowPane fx:id="piecesPane" prefWrapLength="300" hgap="20"
+          vgap="20">
         </FlowPane>
-			</body>
-		</JFXDialogLayout>
-	</JFXDialog>
+      </body>
+    </JFXDialogLayout>
+  </JFXDialog>
 </fx:root>

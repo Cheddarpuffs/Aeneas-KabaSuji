@@ -38,6 +38,8 @@ public class BullpenToBoardMove implements IMove {
     if (level instanceof LevelWithMoves && level.isActive()) {
       ((LevelWithMoves)level).decMoves();
     }
+
+    level.getBullpen().removePiece(placedPiece.getPiece());
     return level.getBoard().addPiece(placedPiece);
   }
 
@@ -52,5 +54,4 @@ public class BullpenToBoardMove implements IMove {
   public boolean isValid() {
     return level.getBoard().canAddPiece(placedPiece);
   }
-
 }

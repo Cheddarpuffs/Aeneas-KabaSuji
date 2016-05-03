@@ -14,7 +14,7 @@ public abstract class Board implements java.io.Serializable {
   public static final int MAX_SIZE = 12;
 
   public static final Color DEFAULT_COLOR = Color.GRAY;
-  
+
   int rows = MAX_SIZE;
   int cols = MAX_SIZE;
 
@@ -37,6 +37,7 @@ public abstract class Board implements java.io.Serializable {
     this.squares = board.squares;
     this.hints = board.hints;
     this.pieces = board.pieces;
+    this.isEditor = board.isEditor;
   }
 
   /**
@@ -235,19 +236,19 @@ public abstract class Board implements java.io.Serializable {
     dest.rows = src.rows;
     dest.cols = src.cols;
   }
-  
+
   /**
    * Resizes the board
    * @param rows number of rows
    * @param cols number of columns
    */
   public void resizeBoard(int rows, int cols){
-    
+
     for (int row = 0; row < squares.length; row++) {
       for (int col = 0; col < squares[0].length; col++) {
-        
+
         // Toggle any squares outside of the range off.
-        if (row >= rows || col >= cols) 
+        if (row >= rows || col >= cols)
           squares[row][col] = false;
         else {
           // If old_rows or old_cols are less then rows/cols, then we need
@@ -261,9 +262,9 @@ public abstract class Board implements java.io.Serializable {
     this.rows = rows;
     this.cols = cols;
   }
-  
+
   public int getRows(){return rows;}
-  
+
   public int getCols(){return cols;}
 
 

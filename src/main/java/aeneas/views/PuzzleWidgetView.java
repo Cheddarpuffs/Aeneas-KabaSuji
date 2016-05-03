@@ -26,7 +26,7 @@ public class PuzzleWidgetView extends LevelWidgetView {
 
     level = levelModel;
     movesLabel = new Label("Moves");
-    movesSelect = new Spinner<Integer>(1, 20, 10);
+    movesSelect = new Spinner<Integer>(1, 999, 10);
     movesSelect.setPrefWidth(70);
     movesSelect.setEditable(true);
     movesSelect.getValueFactory().setValue(levelModel.getAllowedMoves());

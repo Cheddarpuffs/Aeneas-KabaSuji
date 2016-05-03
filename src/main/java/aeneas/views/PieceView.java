@@ -2,10 +2,11 @@ package aeneas.views;
 
 import com.jfoenix.controls.JFXPopup;
 
+import aeneas.Main;
 import aeneas.controllers.ChildDraggedListener;
 import aeneas.controllers.ManipulatePieceController;
+import aeneas.models.DragType;
 import aeneas.models.Level;
-import aeneas.models.Model;
 import aeneas.models.Piece;
 import aeneas.models.Piece.Axis;
 import aeneas.models.Piece.Dir;
@@ -29,12 +30,6 @@ import javafx.scene.paint.Color;
  *
  */
 public class PieceView extends GridPane {
-
-
-  public interface PieceSource {
-    public void returnPiece();
-    public void dragSuccess();
-  }
 
   private JFXPopup piecePopup;
 
@@ -70,6 +65,7 @@ public class PieceView extends GridPane {
       Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
       ClipboardContent content = new ClipboardContent();
       content.put(Piece.dataFormat, pieceModel);
+      content.put(DragType.dataFormat, DragType.Type.Piece);
       db.setContent(content);
 
       SnapshotParameters snapshotParameters = new SnapshotParameters();
@@ -79,6 +75,10 @@ public class PieceView extends GridPane {
       PieceView fullSizedPieceView = new PieceView(levelPane, pieceModel, level, BoardView.SQUARE_SIZE);
 
       Image snapshotImage = fullSizedPieceView.snapshot(snapshotParameters, null);
+      if(Main.isRunningOnMac()) {
+        db.setDragViewOffsetX(snapshotImage.getWidth()/2);
+        db.setDragViewOffsetY(-snapshotImage.getHeight()/2);
+      }
       db.setDragView(snapshotImage);
 
       event.consume();

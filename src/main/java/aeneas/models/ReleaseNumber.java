@@ -1,5 +1,6 @@
 package aeneas.models;
 
+import javafx.scene.input.DataFormat;
 import javafx.scene.paint.Color;
 
 /**
@@ -12,7 +13,7 @@ public class ReleaseNumber implements java.io.Serializable {
   public static Color color2 = Color.BLUEVIOLET;
   public static Color color3 = Color.YELLOW;
 
-
+  public static final DataFormat dataFormat = new DataFormat("aeneas.models.ReleaseNumber");
 
   /** row coordinate */
   int row;

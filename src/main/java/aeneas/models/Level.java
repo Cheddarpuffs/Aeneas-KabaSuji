@@ -30,7 +30,7 @@ public abstract class Level implements java.io.Serializable {
 
   transient int levelNumber;
   transient boolean active = false;
-  
+
   transient Stack<IMove> undoStack;
   transient Stack<IMove> redoStack;
 
@@ -158,7 +158,7 @@ public abstract class Level implements java.io.Serializable {
   public ArrayList<Piece> getPieces() {
     return bullpen.pieces;
   }
-  
+
   /**
    * Undoes the most recently made move, if possible
    * @return true if undo was successful, false otherwise
@@ -248,5 +248,5 @@ public abstract class Level implements java.io.Serializable {
 
   @Override
   public abstract Object clone();
-  
+
 }

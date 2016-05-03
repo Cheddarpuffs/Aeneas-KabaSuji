@@ -29,9 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -104,7 +102,7 @@ public class MainView extends StackPane implements Initializable {
     //create the different types of levels
     levelViews.add(new PuzzleWidgetView(new PuzzleLevel(new Bullpen(BullpenLogic.puzzleLogic()))));
     levelViews.add(new LightningWidgetView(new LightningLevel(new Bullpen(BullpenLogic.lightningLogic()), 0)));
-    levelViews.add(new ReleaseWidgetView(new ReleaseLevel(new Bullpen(BullpenLogic.releaseLogic()), new ReleaseBoard())));
+    levelViews.add(new ReleaseWidgetView(new ReleaseLevel(new Bullpen(BullpenLogic.releaseLogic()), new ReleaseBoard()), model));
   }
 
   public void switchToWelcomeView() {
@@ -191,7 +189,7 @@ public class MainView extends StackPane implements Initializable {
     });
 
     this.setOnDragDropped((e) -> {
-      model.getLatestDragSource().returnPiece();
+      model.getLatestDragSource().returnDraggableNode();
     });
     this.setOnDragExited((e) -> {
     });
