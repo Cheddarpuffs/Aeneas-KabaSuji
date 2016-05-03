@@ -256,7 +256,7 @@ public class BuildLevelView extends StackPane implements Initializable, RefreshL
       }
       else if (source instanceof BullpenView){
         BullpenView v = (BullpenView)source;
-        move = new DeleteBullpenPieceMove(model, piece);
+        move = new DeleteBullpenPieceMove(model, v.getRemovedPiece());
       }
       if (move != null) {
         if (!move.execute()){

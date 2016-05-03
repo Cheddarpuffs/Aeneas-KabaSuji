@@ -1,7 +1,5 @@
 package aeneas.controllers;
-import aeneas.models.Level;
 import aeneas.models.Piece;
-import aeneas.models.PlacedPiece;
 import javafx.scene.paint.Color;
 
 /**
@@ -10,8 +8,6 @@ import javafx.scene.paint.Color;
  *
  */
 public class MakeHintMove implements IMove {
-
-  Level level;
 
   Piece piece;
   Color oldColor;

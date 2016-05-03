@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
  * the board).
  *
  * @author Joseph Martin
+ * @author Logan Tutt
  */
 public abstract class Board implements java.io.Serializable {
   public static final int MAX_SIZE = 12;

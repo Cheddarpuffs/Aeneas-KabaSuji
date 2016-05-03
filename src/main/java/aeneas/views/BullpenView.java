@@ -10,6 +10,7 @@ import aeneas.models.DragType.Type;
 import aeneas.models.Model;
 import aeneas.models.Piece;
 import aeneas.models.PieceFactory;
+import aeneas.models.PlacedPiece;
 import aeneas.models.Square;
 
 import javafx.geometry.Pos;
@@ -30,6 +31,7 @@ public class BullpenView implements ChildDraggedListener, DragSource {
   private Model model;
   Bullpen bullpen;
   RefreshListener listener;
+  private Piece removedPiece;
 
   static final int SQUARE_SIZE = 14;
   private String baseStyle = "-fx-padding:10px;";
@@ -59,7 +61,7 @@ public class BullpenView implements ChildDraggedListener, DragSource {
         DragSource source = model.getLatestDragSource();
         if(source instanceof BoardView) {
           BoardView b = (BoardView)source;
-          IMove m = new BoardToBullpenMove(model.getActiveLevel(), b.getLastDraggedPiece());
+          IMove m = new BoardToBullpenMove(model, b.getLastDraggedPiece());
           if(m.execute()) {
             model.dragSuccess();
             model.getActiveLevel().addNewMove(m);
@@ -129,6 +131,7 @@ public class BullpenView implements ChildDraggedListener, DragSource {
   @Override
   public void onPieceDragged(PieceView pieceView) {
     pieceBeingDragged = pieceView;
+    removedPiece = pieceView.pieceModel;
     model.getActiveLevel().getBullpen().removePiece(pieceView.pieceModel);
     refresh();
     model.setLatestDragSource(this);
@@ -159,5 +162,9 @@ public class BullpenView implements ChildDraggedListener, DragSource {
 
   public void setRefreshListener(RefreshListener listener) {
     this.listener = listener;
+  }
+  
+  public Piece getRemovedPiece() {
+    return removedPiece;
   }
 }

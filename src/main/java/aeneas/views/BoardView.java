@@ -166,7 +166,8 @@ public class BoardView extends GridPane implements DragSource {
             model.getActiveLevel().addNewMove(m);
           }
         } else if (source instanceof BullpenView) {
-          IMove m = new BullpenToBoardMove(gameModel.getActiveLevel(), piece,
+          BullpenView v = (BullpenView) source;
+          IMove m = new BullpenToBoardMove(gameModel, v.getRemovedPiece(),
               closestRow, closestCol);
           if (!m.execute()) {
             model.returnDraggableNode();

@@ -1,6 +1,7 @@
 package aeneas.controllers;
 import aeneas.models.Level;
 import aeneas.models.Level.LevelWithMoves;
+import aeneas.models.Model;
 import aeneas.models.Piece;
 import aeneas.models.PlacedPiece;
 
@@ -10,7 +11,7 @@ import aeneas.models.PlacedPiece;
  * @author jbkuszmaul
  */
 public class BullpenToBoardMove implements IMove {
-  Level level;
+  Model model;
 
   PlacedPiece placedPiece;
 
@@ -25,8 +26,8 @@ public class BullpenToBoardMove implements IMove {
    * @param row The row to place the piece in
    * @param col The column to place the piece in
    */
-  public BullpenToBoardMove(Level level, Piece piece, int row, int col) {
-    this.level = level;
+  public BullpenToBoardMove(Model model, Piece piece, int row, int col) {
+    this.model = model;
     this.placedPiece = new PlacedPiece(piece, row, col);
     this.row = row;
     this.col = col;
@@ -35,23 +36,23 @@ public class BullpenToBoardMove implements IMove {
   @Override
   public boolean execute() {
     if (!isValid()) return false;
-    if (level instanceof LevelWithMoves && level.isActive()) {
-      ((LevelWithMoves)level).decMoves();
+    if (model instanceof LevelWithMoves && model.getActiveLevel().isActive()) {
+      ((LevelWithMoves)model).decMoves();
     }
 
-    level.getBullpen().removePiece(placedPiece.getPiece());
-    return level.getBoard().addPiece(placedPiece);
+    model.getActiveLevel().getBullpen().removePiece(placedPiece.getPiece());
+    return model.getActiveLevel().getBoard().addPiece(placedPiece);
   }
 
   @Override
   public boolean undo() {
-    level.getBoard().removePiece(placedPiece);
-    level.getBullpen().addPiece(placedPiece.getPiece());
+    model.getActiveLevel().getBoard().removePiece(placedPiece);
+    model.getActiveLevel().getBullpen().addPiece(placedPiece.getPiece());
     return true;
   }
 
   @Override
   public boolean isValid() {
-    return level.getBoard().canAddPiece(placedPiece);
+    return model.getActiveLevel().getBoard().canAddPiece(placedPiece);
   }
 }
