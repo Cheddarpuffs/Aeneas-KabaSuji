@@ -19,7 +19,7 @@ public class DeleteReleaseNumberMove implements IMove {
   /**
    * Constructor
    * @param model model
-   * @param piece the piece you are deleting
+   * @param num the release number you are deleting
    */
   public DeleteReleaseNumberMove(Model model, ReleaseNumber num) {
     this.model=model;
