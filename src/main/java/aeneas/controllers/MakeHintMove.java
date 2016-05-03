@@ -2,6 +2,7 @@ package aeneas.controllers;
 import aeneas.models.Level;
 import aeneas.models.Piece;
 import aeneas.models.PlacedPiece;
+import javafx.scene.paint.Color;
 
 /**
  * Move action to create a new hint
@@ -13,6 +14,7 @@ public class MakeHintMove implements IMove {
   Level level;
 
   Piece piece;
+  Color oldColor;
 
   int row;
   int col;
@@ -28,6 +30,7 @@ public class MakeHintMove implements IMove {
   @Override
   public boolean execute() {
    if(isValid()){
+     oldColor = piece.getColor();
      piece.setHint(true);
     return true;
     }
@@ -38,7 +41,8 @@ public class MakeHintMove implements IMove {
   @Override
   public boolean undo() {
     piece.setHint(false);
-    return false;
+    piece.setColor(oldColor);
+    return true;
   }
 
   @Override
