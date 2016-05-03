@@ -114,6 +114,7 @@ public abstract class Board implements java.io.Serializable {
   public boolean removePiece(PlacedPiece piece) {
     return pieces.remove(piece);
   }
+  
 
   /**
    * Gets the piece at the specified position (if there is one)
