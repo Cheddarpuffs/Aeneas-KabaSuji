@@ -150,6 +150,10 @@ public class BoardView extends GridPane implements DragSource {
             model.dragSuccess();
             model.getActiveLevel().addNewMove(m);
           }
+        } else {
+          // Force do, no undo functionality available.
+          model.getActiveLevel().getBoard().addPiece(
+              new PlacedPiece(piece, dragDropRow, dragDropCol));
         }
         break;
 
