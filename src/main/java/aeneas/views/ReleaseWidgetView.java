@@ -10,9 +10,7 @@ import aeneas.models.Level;
 import aeneas.models.Model;
 import aeneas.models.ReleaseLevel;
 import aeneas.models.ReleaseNumber;
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
@@ -25,13 +23,9 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -44,8 +38,7 @@ public class ReleaseWidgetView extends LevelWidgetView implements DragSource {
   Spinner<Integer> movesSelect;
   private ReleaseLevel level;
   private boolean isUserInput = true;
-  private Label releaseNumLabel;
-  private final int W = 30;
+  private ReleaseNumView releaseNumView;
 
   public ReleaseWidgetView(ReleaseLevel levelModel, Model model) {
     super(levelModel);
@@ -54,14 +47,7 @@ public class ReleaseWidgetView extends LevelWidgetView implements DragSource {
     movesSelect = new Spinner<Integer>(1, 999, 10);
     Label movesLabel = new Label("Moves");
 
-    releaseNumLabel = new Label("5");
-    releaseNumLabel.setPadding(new Insets(8, 8, 8, 8));
-    releaseNumLabel.setTextAlignment(TextAlignment.CENTER);
-    releaseNumLabel.setPrefSize(W,W);
-    releaseNumLabel.setTextFill(Color.WHITE);
-    releaseNumLabel.setBackground(new Background(new BackgroundFill(Color.GRAY,
-        new CornerRadii(2, false), new Insets(0, 0, 0, 0))));
-    JFXDepthManager.setDepth(releaseNumLabel, 1);
+    releaseNumView = new ReleaseNumView(new ReleaseNumber(0,0, Color.BLACK, 1));
 
     FontAwesomeIconView upArrowGlyph = new FontAwesomeIconView();
     upArrowGlyph.setGlyphName("ARROW_RIGHT");
@@ -86,25 +72,23 @@ public class ReleaseWidgetView extends LevelWidgetView implements DragSource {
     JFXDepthManager.setDepth(downReleaseNumButton, 1);
 
     upReleaseNumButton.setOnMouseClicked((e) -> {
-      Integer i = Integer.parseInt(releaseNumLabel.getText());
+      int i = releaseNumView.getValue();
       if (i < 6) {
-        releaseNumLabel.setText(String.valueOf(i + 1));
+        releaseNumView.setValue(i + 1);
         upReleaseNumButton.disableProperty().set(false);
         downReleaseNumButton.disableProperty().set(false);
-      }
-      else {
+      } else {
         upReleaseNumButton.disableProperty().set(true);
       }
     });
 
     downReleaseNumButton.setOnMouseClicked((e) -> {
-      Integer i = Integer.parseInt(releaseNumLabel.getText());
+      int i = releaseNumView.getValue();
       if (i > 1) {
-        releaseNumLabel.setText(String.valueOf(i - 1));
+        releaseNumView.setValue(i - 1);
         downReleaseNumButton.disableProperty().set(false);
         upReleaseNumButton.disableProperty().set(false);
-      }
-      else {
+      } else {
         downReleaseNumButton.disableProperty().set(true);
       }
     });
@@ -134,12 +118,11 @@ public class ReleaseWidgetView extends LevelWidgetView implements DragSource {
     JFXColorPicker colorSelect = new JFXColorPicker();
     colorSelect.prefWidth(100);
 
-
     HBox releaseNumBox = new HBox();
     releaseNumBox.setAlignment(Pos.CENTER_LEFT);
     releaseNumBox.setSpacing(6);
     releaseNumBox.getChildren().add(downReleaseNumButton);
-    releaseNumBox.getChildren().add(releaseNumLabel);
+    releaseNumBox.getChildren().add(releaseNumView.getNode());
     releaseNumBox.getChildren().add(upReleaseNumButton);
 
     box.getChildren().add(movesBox);
@@ -152,18 +135,14 @@ public class ReleaseWidgetView extends LevelWidgetView implements DragSource {
 
     colorSelect.valueProperty()
         .addListener((observer, old_color, new_color) -> {
-          releaseNumLabel.setTextFill(new_color);
+          releaseNumView.setColor(new_color);
         });
 
-    releaseNumLabel.setOnDragDetected((MouseEvent event) -> {
-      Dragboard db = releaseNumLabel.startDragAndDrop(TransferMode.MOVE);
+    releaseNumView.getNode().setOnDragDetected((MouseEvent event) -> {
+      Dragboard db = releaseNumView.getNode().startDragAndDrop(TransferMode.MOVE);
       ClipboardContent content = new ClipboardContent();
 
-      Integer num = Integer.parseInt(releaseNumLabel.getText());
-      ReleaseNumber releaseNum = new ReleaseNumber(-1, -1,
-          colorSelect.getValue(), num);
-
-      content.put(ReleaseNumber.dataFormat, releaseNum);
+      content.put(ReleaseNumber.dataFormat, releaseNumView.cloneNumber());
       content.put(DragType.dataFormat, DragType.Type.ReleaseNum);
 
       db.setContent(content);
@@ -174,8 +153,8 @@ public class ReleaseWidgetView extends LevelWidgetView implements DragSource {
       SnapshotParameters snapshotParameters = new SnapshotParameters();
       snapshotParameters.setFill(Color.TRANSPARENT); // i3 doesn't handle this
 
-      Image snapshotImage = releaseNumLabel.snapshot(snapshotParameters, null);
-      db.setDragView(snapshotImage, W, W);
+      Image snapshotImage = releaseNumView.getNode().snapshot(snapshotParameters, null);
+      db.setDragView(snapshotImage);
 
       event.consume();
     });

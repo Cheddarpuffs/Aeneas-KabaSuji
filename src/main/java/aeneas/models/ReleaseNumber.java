@@ -43,7 +43,7 @@ public class ReleaseNumber implements java.io.Serializable {
   public void setValue(int val) { this.val = val; }
 
   @Override
-  public Object clone() {
+  public ReleaseNumber clone() {
     return new ReleaseNumber(this.row, this.col, Color.web(this.color), this.val);
   }
 }
