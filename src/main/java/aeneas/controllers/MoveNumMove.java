@@ -52,7 +52,7 @@ public class MoveNumMove implements IMove {
 
   @Override
   public boolean isValid() {
-    return true;
+    return level.getBoard().getIsEditor();
   }
 
 }

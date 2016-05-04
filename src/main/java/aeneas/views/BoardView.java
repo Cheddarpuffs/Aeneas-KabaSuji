@@ -242,7 +242,7 @@ public class BoardView extends GridPane implements DragSource {
           Board tempBoard = this.gameModel.getActiveLevel().getBoard();
           Square tempSquare = tempBoard.assembleSquares()[r][c];
 
-          if (tempSquare.getNum() != null) {
+          if (tempSquare.getNum() != null && tempBoard.getIsEditor()) {
             SquareView draggedSquareView = grid[r][c];
 
             this.numBeingDragged = tempSquare.getNum();
