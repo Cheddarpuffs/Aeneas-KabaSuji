@@ -67,7 +67,7 @@ public class BoardView extends GridPane implements DragSource {
   /**
    * Sets a listener to be notified of events that may cause the board
    * to need to be redrawn.
-   * 
+   *
    * @param listener The listener to be notified.
    */
   public void setRefreshListener(RefreshListener listener) {
@@ -283,7 +283,7 @@ public class BoardView extends GridPane implements DragSource {
             SnapshotParameters snapshotParameters = new SnapshotParameters();
             snapshotParameters.setFill(Color.TRANSPARENT);
 
-            draggedSquareView.setColor(Board.DEFAULT_COLOR);
+            draggedSquareView.setColor(Square.DEFAULT_COLOR_1);
             Image snapshotImage = draggedSquareView.snapshot(snapshotParameters, null);
             db.setDragView(snapshotImage);
 

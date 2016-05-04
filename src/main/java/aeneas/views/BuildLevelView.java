@@ -50,6 +50,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * Display the level builder.
@@ -222,6 +223,7 @@ public class BuildLevelView extends StackPane
       piecesPane.getChildren().clear();
 
       for (Piece pieceModel : PieceFactory.getPieces()) {
+        pieceModel.setColor(Color.GRAY);
         PieceView pView = new PieceView((Pane) this, pieceModel,
             model.getActiveLevel(), PIECE_PICKER_SQUARE_SIZE);
         piecesPane.getChildren().add(pView);
