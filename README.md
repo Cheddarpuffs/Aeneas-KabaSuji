@@ -31,10 +31,10 @@ If you just want to use it as a java project
 -You can rotate and flip pieces by right clicking on a piece.
 -You can also use the following key-bindings:
 ```
-	-click:rotate clockwise
-	-shift + click: rotate counter-clockwise
-	-ctrl + click: flip horizontally
-	-ctrl + shift+ click: flip vertically
+click:			rotate clockwise
+shift + click:		rotate counter-clockwise
+ctrl + click:		flip horizontally
+ctrl + shift + click: 	flip vertically
 ```
 
 ### For a Puzzle Level
