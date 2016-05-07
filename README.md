@@ -24,9 +24,8 @@ If you just want to use it as a java project
  - file > import > existing project
  - Run as Java Application
 
-===========
-HOW TO PLAY
-===========
+
+## How to play
 -Stars are earned based on your performance, and you must earn one or more star to proceed to the next level.
 -Pieces can be dragged on to and around the board, depending on the level type.
 -You can rotate and flip pieces by right clicking on a piece.
@@ -36,23 +35,23 @@ HOW TO PLAY
 	-ctrl + click: flip horizontally
 	-ctrl + shift+ click: flip vertically
 
-==================
-FOR A PUZZLE LEVEL
-==================
+
+### For a Puzzle Level
+
 -You begin the level with a set of pieces and a number of moves
 -To earn three stars, you must cover all available spaces in the number of moves provided.
 -The level will end when you run out of moves.
 
-=====================
-FOR A LIGHTNING LEVEL
-=====================
+
+### For a Lightening Level
+
 -You begin the level with a set of pieces and a time allowed
 -To earn three stars, you must cover all available spaces in the time provided.
 -The level will end when you run out of time.
 
-=====================
-FOR A RELEASE LEVEL
-=====================
+
+### For a release level
+
 -You begin the level with a set of pieces and a number of moves
 -To earn three stars, you must cover all sets of numbers on the board in the number of moves provided.
 -The level will end when you run out of moves.
