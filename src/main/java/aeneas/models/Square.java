@@ -16,6 +16,12 @@ public class Square implements java.io.Serializable {
   private String color;
 
   /**
+   * Default color of board squares
+   */
+  public static final Color DEFAULT_COLOR_1 = Color.web("#cecece");
+  public static final Color DEFAULT_COLOR_2 = Color.web("#d2d2d2");
+
+  /**
    * Create a new square
    * @param dRow
    * @param dCol

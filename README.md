@@ -1,10 +1,8 @@
 [![Build Status](https://travis-ci.org/Cheddarpuffs/Aeneas-KabaSuji.svg?branch=master)](https://travis-ci.org/Cheddarpuffs/Aeneas-KabaSuji)
 [![codecov](https://codecov.io/gh/Cheddarpuffs/Aeneas-KabaSuji/branch/master/graph/badge.svg)](https://codecov.io/gh/Cheddarpuffs/Aeneas-KabaSuji)
 
-
 # Aeneas-KabaSuji
 Aeneas KabaSuji
-
 
 ## Building
 ./gradlew build

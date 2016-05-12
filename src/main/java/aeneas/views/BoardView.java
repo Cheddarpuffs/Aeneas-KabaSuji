@@ -284,7 +284,7 @@ public class BoardView extends GridPane implements DragSource {
             SnapshotParameters snapshotParameters = new SnapshotParameters();
             snapshotParameters.setFill(Color.TRANSPARENT);
 
-            draggedSquareView.setColor(Board.DEFAULT_COLOR);
+            draggedSquareView.setColor(Square.DEFAULT_COLOR_1);
             Image snapshotImage = draggedSquareView.snapshot(snapshotParameters, null);
             db.setDragView(snapshotImage);
 

@@ -21,11 +21,6 @@ public abstract class Board implements java.io.Serializable {
    */
   public static final int MAX_SIZE = 12;
 
-  /**
-   * Default color of board squares
-   */
-  public static final Color DEFAULT_COLOR = Color.GRAY;
-
   int rows = MAX_SIZE;
   int cols = MAX_SIZE;
 
@@ -38,8 +33,8 @@ public abstract class Board implements java.io.Serializable {
    */
   public Board() {
     pieces = new ArrayList<>();
-    for (int i=0;i<MAX_SIZE;i++){
-      for (int j=0;j<MAX_SIZE;j++){
+    for (int i = 0; i < MAX_SIZE; i++) {
+      for (int j = 0; j < MAX_SIZE; j++) {
         squares[i][j] = true;
       }
     }
@@ -47,7 +42,9 @@ public abstract class Board implements java.io.Serializable {
 
   /**
    * Constructor
-   * @param board to use data from
+   *
+   * @param board
+   *          to use data from
    */
   public Board(Board board) {
     this.squares = board.squares;
@@ -80,7 +77,8 @@ public abstract class Board implements java.io.Serializable {
   boolean locationValid(Square s) {
     int row = s.getRow();
     int col = s.getCol();
-    if (row >= 0 && row < squares.length && col >= 0 && col < squares[row].length) {
+    if (row >= 0 && row < squares.length && col >= 0
+        && col < squares[row].length) {
       return squares[row][col];
     } else {
       return false;
@@ -95,15 +93,20 @@ public abstract class Board implements java.io.Serializable {
    * @return true if the piece was added to the board, false otherwise.
    */
   public boolean addPiece(PlacedPiece piece) {
-    if (!canAddPiece(piece)) return false;
-    if (piece.getPiece().isHint()) pieces.add(0, piece);
-    else pieces.add(piece);
+    if (!canAddPiece(piece))
+      return false;
+    if (piece.getPiece().isHint())
+      pieces.add(0, piece);
+    else
+      pieces.add(piece);
     return true;
   }
 
   /**
    * Determines if the piece can be added to the board.
-   * @param piece The piece to check the validity of.
+   *
+   * @param piece
+   *          The piece to check the validity of.
    * @return true if the piece can be added.
    */
   public boolean canAddPiece(PlacedPiece piece) {
@@ -114,7 +117,8 @@ public abstract class Board implements java.io.Serializable {
         return false;
     }
     // If it is a hint, we don't care about intersections.
-    if (piece.getPiece().isHint()) return true;
+    if (piece.getPiece().isHint())
+      return true;
     // If the piece overlaps an existing piece, placement not valid
     if (intersects(piece))
       return false;
@@ -133,7 +137,6 @@ public abstract class Board implements java.io.Serializable {
     return pieces.remove(piece);
   }
 
-
   /**
    * Gets the piece at the specified position (if there is one)
    *
@@ -144,7 +147,7 @@ public abstract class Board implements java.io.Serializable {
    * @return The piece at the given position if there is one, null otherwise
    */
   public PlacedPiece getPieceAtLocation(int row, int col) {
-    for (int i = pieces.size()-1; i >= 0; i--) {
+    for (int i = pieces.size() - 1; i >= 0; i--) {
       if (pieces.get(i).intersects(row, col)) {
         return pieces.get(i);
       }
@@ -164,7 +167,8 @@ public abstract class Board implements java.io.Serializable {
   public boolean intersects(PlacedPiece piece) {
     for (PlacedPiece p : pieces) {
       // We don't care about intersections with hints.
-      if (p.getPiece().isHint()) continue;
+      if (p.getPiece().isHint())
+        continue;
       if (piece.intersects(p)) {
         return true;
       }
@@ -188,31 +192,41 @@ public abstract class Board implements java.io.Serializable {
    *
    * @return A two dimensional array representing the current state of the board
    */
-  public Square[][] assembleSquares(){
+  public Square[][] assembleSquares() {
     Square[][] squares = new Square[MAX_SIZE][MAX_SIZE];
     // Run normal pieces after hint in order to avoid hint displaying
     // over the normal pieces.
-    for (PlacedPiece piece : pieces){
-      for(Square s : piece.getSquaresInBoardFrame())
+    for (PlacedPiece piece : pieces) {
+      for (Square s : piece.getSquaresInBoardFrame())
         squares[s.getRow()][s.getCol()] = s;
     }
-    for(int row = 0;row<squares.length;row++ ){
-      for(int col = 0;col<squares[0].length;col++){
-        if (squares[row][col] == null && this.squares[row][col])
-            squares[row][col]=new Square(row, col, Board.DEFAULT_COLOR);
+
+    boolean color1 = false;
+    for (int row = 0; row < squares.length; row++) {
+      for (int col = 0; col < squares[0].length; col++) {
+        if (squares[row][col] == null && this.squares[row][col]) {
+          if (color1) {
+            squares[row][col] = new Square(row, col, Square.DEFAULT_COLOR_1);
+          } else {
+            squares[row][col] = new Square(row, col, Square.DEFAULT_COLOR_2);
+          }
+        }
+        color1 = !color1;
       }
+      color1 = !color1;
     }
     return squares;
   }
 
   /**
    * gets the number of squares that are not covered and valid
+   *
    * @return the number of squares that are not covered and valid
    */
   public int numSquaresRemaining() {
     int count = 0;
-    for(int j = 0; j < MAX_SIZE; j++) {
-      for(int i = 0; i < MAX_SIZE; i++) {
+    for (int j = 0; j < MAX_SIZE; j++) {
+      for (int i = 0; i < MAX_SIZE; i++) {
         count += squares[j][i] && (getPieceAtLocation(j, i) == null) ? 1 : 0;
       }
     }
@@ -222,6 +236,7 @@ public abstract class Board implements java.io.Serializable {
 
   /**
    * Gets the array representing which squares on the board are valid.
+   *
    * @return The array representing which squares on the board are valid.
    */
   public boolean[][] getSquares() {
@@ -230,8 +245,11 @@ public abstract class Board implements java.io.Serializable {
 
   /**
    * Copy common elements of two boards; used for clone() on the subclasses.
-   * @param src the board to get the data from
-   * @param dest the board to copy the data to
+   *
+   * @param src
+   *          the board to get the data from
+   * @param dest
+   *          the board to copy the data to
    */
   protected void copy(Board src, Board dest) {
     for (PlacedPiece piece : src.pieces) {
@@ -248,10 +266,13 @@ public abstract class Board implements java.io.Serializable {
 
   /**
    * Resizes the board
-   * @param rows number of rows
-   * @param cols number of columns
+   *
+   * @param rows
+   *          number of rows
+   * @param cols
+   *          number of columns
    */
-  public void resizeBoard(int rows, int cols){
+  public void resizeBoard(int rows, int cols) {
 
     for (int row = 0; row < squares.length; row++) {
       for (int col = 0; col < squares[0].length; col++) {
@@ -262,7 +283,8 @@ public abstract class Board implements java.io.Serializable {
         else {
           // If old_rows or old_cols are less then rows/cols, then we need
           // to also toggle some squares on.
-          if ((row >= this.rows && row < rows) || (col >= this.cols && col < cols)) {
+          if ((row >= this.rows && row < rows)
+              || (col >= this.cols && col < cols)) {
             squares[row][col] = true;
           }
         }
@@ -272,14 +294,18 @@ public abstract class Board implements java.io.Serializable {
     this.cols = cols;
   }
 
-  public int getRows(){ return rows; }
+  public int getRows() {
+    return rows;
+  }
 
-  public int getCols(){ return cols; }
+  public int getCols() {
+    return cols;
+  }
 
   /**
-   * Set whether or not the board is in an editor context.
-   * This affects whether or not hints and release numbers
-   * can be dragged around.
+   * Set whether or not the board is in an editor context. This affects whether
+   * or not hints and release numbers can be dragged around.
+   *
    * @param isEditor
    */
   public void setIsEditor(boolean isEditor) {
@@ -288,6 +314,7 @@ public abstract class Board implements java.io.Serializable {
 
   /**
    * Check whether or not the board is in an editor context.
+   *
    * @return True if the board is in an editor context.
    */
   public boolean getIsEditor() {

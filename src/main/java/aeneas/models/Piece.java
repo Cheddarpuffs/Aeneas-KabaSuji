@@ -1,6 +1,9 @@
 package aeneas.models;
 
 import javafx.scene.paint.Color;
+
+import java.util.Random;
+
 import javafx.scene.input.DataFormat;
 
 /**
@@ -53,13 +56,34 @@ public class Piece implements java.io.Serializable {
   private boolean hint;
   private String color;
 
+  private static Color pieceColors[] = new Color[] {
+    Color.web("#1abc9c"),
+    Color.web("#2ecc71"),
+    Color.web("#3498db"),
+    Color.web("#9b59b6"),
+    Color.web("#16a085"),
+    Color.web("#27ae60"),
+    Color.web("#2980b9"),
+    Color.web("#8e44ad"),
+    Color.web("#f1c40f"),
+    Color.web("#e67e22"),
+    Color.web("#e74c3c"),
+    Color.web("#f39c12"),
+    Color.web("#d35400"),
+    Color.web("#c0392b"),
+  };
 
   /**
    * Constructor
    * @param squares squares to make the piece from
    */
   public Piece(Square[]squares){
-    this(squares, Color.BLUE);
+    this(squares, newColor());
+  }
+
+  public static Color newColor() {
+    int index = (new Random()).nextInt(pieceColors.length);
+    return pieceColors[index];
   }
 
   /**
@@ -196,6 +220,6 @@ public class Piece implements java.io.Serializable {
    */
   public void setHint(boolean hint) {
     this.hint = hint;
-    this.setColor(Color.CORNSILK);
+    this.setColor(Color.CADETBLUE);
   }
 }
